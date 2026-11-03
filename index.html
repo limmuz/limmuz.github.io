@@ -7,10 +7,12 @@
   <meta name="description" content="Portfólio de Miguel Luiz Lima Nascimento: soluções reais construídas com IA generativa, automação e análise de dados.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#05070C">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
+  <a href="#projetos" class="skip">Pular para os projetos</a>
 
   <header class="nav">
     <a href="#topo" class="logo">miguel<span>.lima</span></a>
@@ -26,8 +28,8 @@
 
     <!-- HERO -->
     <section class="hero">
-      <p class="eyebrow mono">// IA generativa · automação · dados</p>
-      <h1>Eu uso IA para transformar <mark>problemas reais</mark> em soluções funcionando.</h1>
+      <p class="eyebrow mono">&gt; IA generativa · automação · dados<span class="caret" aria-hidden="true"></span></p>
+      <h1>Eu uso IA para transformar <span class="grad">problemas reais</span> em soluções funcionando.</h1>
       <p class="lead">
         Sou o Miguel, estudante de Análise e Desenvolvimento de Sistemas (Senac) e Assistente Administrativo no
         Nubank Parque. Lá, encontro processos manuais e construo do zero sistemas, automações e dashboards,
@@ -41,7 +43,7 @@
         <a href="#projetos" class="btn btn-primary">Ver projetos</a>
         <a href="curriculo.pdf" class="btn btn-ghost" target="_blank" rel="noopener">Baixar currículo</a>
       </div>
-      <ul class="stats">
+      <ul class="stats reveal">
         <li><strong>até 14h</strong><span>economizadas por mês com automações</span></li>
         <li><strong>100+</strong><span>pessoas ao mesmo tempo no quiz ao vivo</span></li>
         <li><strong>~20</strong><span>usuários na Central de Engenharia</span></li>
@@ -54,26 +56,26 @@
       <div class="section-head">
         <p class="eyebrow mono">01 / projetos</p>
         <h2>Do problema ao resultado</h2>
-        <div class="filters" role="tablist">
-          <button class="chip active" data-filter="all">Todos</button>
-          <button class="chip" data-filter="ia">Feito com IA</button>
-          <button class="chip" data-filter="web">Web</button>
-          <button class="chip" data-filter="dados">Dados</button>
-          <button class="chip" data-filter="eng">Engenharia de software</button>
+        <div class="filters" role="group" aria-label="Filtrar projetos">
+          <button class="chip" type="button" data-filter="all" aria-pressed="true">Todos<span class="n"></span></button>
+          <button class="chip" type="button" data-filter="ia" aria-pressed="false">Feito com IA<span class="n"></span></button>
+          <button class="chip" type="button" data-filter="web" aria-pressed="false">Web<span class="n"></span></button>
+          <button class="chip" type="button" data-filter="dados" aria-pressed="false">Dados<span class="n"></span></button>
+          <button class="chip" type="button" data-filter="eng" aria-pressed="false">Engenharia de software<span class="n"></span></button>
+          <p class="filter-status" aria-live="polite"></p>
         </div>
       </div>
 
       <div class="grid">
 
         <!-- 1 -->
-        <article class="card featured" data-tags="ia web dados eng">
+        <article class="card reveal featured" data-tags="ia web dados eng">
           <div class="shot">
             <img src="img/central-engenharia.png" alt="Tela da Central de Engenharia" loading="lazy">
           </div>
           <div class="card-body">
             <div class="card-top">
-              <span class="tag">Destaque</span>
-              <span class="status">Em uso</span><span class="status">1ª versão em ~2 dias</span>
+              <span class="badge hl">Destaque</span><span class="badge">Em uso por ~20 pessoas</span><span class="badge time">1ª versão em 2 a 4 dias</span>
             </div>
             <h3>Central de Engenharia</h3>
             <p class="summary">Sistema web interno que substitui planilhas, macros e controles manuais da área de Engenharia de uma arena de eventos. Prints com dados fictícios.</p>
@@ -85,19 +87,19 @@
             </dl>
             <ul class="stack mono"><li>Python</li><li>Flask</li><li>SQLite</li><li>JavaScript</li><li>Chart.js</li><li>Claude Code</li></ul>
             <div class="links">
-              <a href="central-demo/" class="link" target="_blank" rel="noopener">▶ Usar a demo ao vivo</a>
+              <a href="central-demo/" class="link primary" target="_blank" rel="noopener">▶ Usar a demo ao vivo</a>
               <a href="https://github.com/limmuz/central-eventos" class="link" target="_blank" rel="noopener">{ } Código</a>
             </div>
           </div>
         </article>
 
         <!-- 2 -->
-        <article class="card" data-tags="ia web eng">
+        <article class="card reveal" data-tags="ia web eng">
           <div class="shot">
             <img src="img/quiz-ao-vivo.png" alt="Tela do quiz ao vivo" loading="lazy">
           </div>
           <div class="card-body">
-            <div class="card-top"><span class="status">1ª versão em ~2 dias</span></div>
+            <div class="card-top"><span class="badge time">Feito em ~2 dias</span></div>
             <h3>Quiz ao vivo multiplayer</h3>
             <p class="summary">Plataforma estilo Kahoot para apresentações e aulas, com acesso por QR code.</p>
             <dl class="psr">
@@ -107,18 +109,19 @@
             </dl>
             <ul class="stack mono"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>vibe coding</li></ul>
             <div class="links">
-              <a href="https://limmuz.github.io/quiz-ao-vivo/" class="link" target="_blank" rel="noopener">↗ Testar ao vivo</a>
+              <a href="https://limmuz.github.io/quiz-ao-vivo/" class="link primary" target="_blank" rel="noopener">↗ Testar ao vivo</a>
               <a href="https://github.com/limmuz/quiz-ao-vivo" class="link" target="_blank" rel="noopener">{ } Código</a>
             </div>
           </div>
         </article>
 
         <!-- 4 -->
-        <article class="card" data-tags="dados eng">
+        <article class="card reveal" data-tags="dados eng">
           <div class="shot">
             <img src="img/credenciamento.png" alt="Sistema de credenciamento em Python" loading="lazy">
           </div>
           <div class="card-body">
+            <div class="card-top"><span class="badge">Em uso</span><span class="badge time">Feito em ~2 semanas</span></div>
             <h3>Credenciamento automático</h3>
             <p class="summary">App desktop em Python que preenche sozinho o portal de credenciamento de eventos. Prints com dados fictícios.</p>
             <dl class="psr">
@@ -134,11 +137,12 @@
         </article>
 
         <!-- 5 -->
-        <article class="card" data-tags="dados ia">
+        <article class="card reveal" data-tags="dados ia">
           <div class="shot">
             <img src="img/relatorios.png" alt="Visual em Python no Power BI" loading="lazy">
           </div>
           <div class="card-body">
+            <div class="card-top"><span class="badge time">Feito em ~1 mês</span></div>
             <h3>Relatórios automatizados</h3>
             <p class="summary">Visuais em Python no Power BI e um template de PowerPoint gerado por código. Prints com dados fictícios.</p>
             <dl class="psr">
@@ -151,12 +155,12 @@
         </article>
 
         <!-- 6 -->
-        <article class="card" data-tags="ia web">
+        <article class="card reveal" data-tags="ia web">
           <div class="shot">
             <img src="img/app-financas.png" alt="App de finanças pessoais" loading="lazy">
           </div>
           <div class="card-body">
-            <div class="card-top"><span class="status">Em desenvolvimento</span></div>
+            <div class="card-top"><span class="badge">Em desenvolvimento</span></div>
             <h3>App de finanças com Open Finance</h3>
             <p class="summary">App mobile pessoal que lê meus dados bancários via API e responde perguntas em linguagem natural.</p>
             <dl class="psr">
@@ -168,14 +172,14 @@
         </article>
 
         <!-- Lybre -->
-        <article class="card" data-tags="web eng">
+        <article class="card reveal" data-tags="web eng">
           <div class="shot">
-            <img src="img/lybre.png" alt="Painel de qualidade do Lybre no SonarCloud" loading="lazy">
+            <img src="img/lybre.png" alt="Página inicial do Lybre com últimas leituras e lista de leitura" loading="lazy">
           </div>
           <div class="card-body">
-            <div class="card-top"><span class="status">Projeto em grupo</span></div>
+            <div class="card-top"><span class="badge">Projeto em grupo</span><span class="badge time">Feito em ~2 meses</span></div>
             <h3>Lybre · biblioteca pessoal com rede de leitores</h3>
-            <p class="summary">Projeto da faculdade (Senac): biblioteca pessoal com avaliações, perfis, notificações e recomendações da comunidade.</p>
+            <p class="summary">Projeto da faculdade (Senac). Print com dados fictícios: biblioteca pessoal com avaliações, perfis, notificações e recomendações da comunidade.</p>
             <dl class="psr">
               <div><dt>Minha parte</dt><dd>Criei a base do projeto (Spring Boot + React) e as primeiras telas, e escrevi a suíte de testes automatizados: unitários parametrizados, integração com MongoDB real (Testcontainers), E2E e VCR de API externa.</dd></div>
               <div><dt>Qualidade</dt><dd>Cobertura de testes acima de 88% (JaCoCo), quality gate aprovado no SonarCloud e CI no GitHub Actions a cada push.</dd></div>
@@ -189,11 +193,12 @@
         </article>
 
         <!-- 7 -->
-        <article class="card" data-tags="web">
+        <article class="card reveal" data-tags="web">
           <div class="shot">
             <img src="img/conecta.png" alt="Protótipo do CRM CONECTA no Figma" loading="lazy">
           </div>
           <div class="card-body">
+            <div class="card-top"><span class="badge">Projeto em grupo</span><span class="badge time">Protótipo em ~2 meses</span></div>
             <h3>CONECTA · CRM para microempreendedor</h3>
             <p class="summary">Projeto Integrador da faculdade: protótipo navegável de alta fidelidade para uma confeitaria.</p>
             <dl class="psr">
@@ -216,7 +221,7 @@
         <p class="eyebrow mono">02 / como uso IA</p>
         <h2>Meu processo, do zero ao resultado</h2>
       </div>
-      <ol class="steps">
+      <ol class="steps reveal">
         <li>
           <span class="mono">01</span>
           <h3>Encontro a dor</h3>
@@ -244,53 +249,134 @@
         </li>
       </ol>
 
-      <p class="prompts-intro">Prompts reais que usei nos projetos (com pequenas correções de digitação e sem dados da empresa). Eu começo pelo problema e pelo resultado que quero, e vou refinando com regras de negócio a cada entrega.</p>
-      <div class="prompt-tabs" role="tablist">
-        <button class="ptab active" data-p="p1" type="button">Central · pedido inicial</button>
-        <button class="ptab" data-p="p2" type="button">Central · regra de negócio</button>
-        <button class="ptab" data-p="p3" type="button">Quiz ao vivo</button>
-      </div>
-      <div class="prompt-box" data-p="p1">
-        <div class="prompt-head mono"><span class="dot"></span><span class="dot"></span><span class="dot"></span> claude code · central de engenharia</div>
-        <pre class="mono"><code>Tenho um Power BI e uma planilha com as informações que o alimentam.
-Você me ajuda a reestruturar? Gostaria de deixar o Excel mais bonito
-(assim como o Power BI), mas, se possível, podemos ter isso na rede?
-Por exemplo: um programa em Python/HTML/CSS onde eu possa inserir as
-informações necessárias (hoje, tudo o que o Power BI usa eu coloco
-nessa planilha). Quero a opção de anexar também as planilhas de custo
-de cada evento.
+      <div class="prompts">
+        <h3>Prompts que viraram produto</h3>
+        <p class="section-sub">Em cada aba, o pedido que fiz no começo e a versão estruturada que uso hoje para especificar um projeto: contexto, objetivo, regras de negócio, restrições e critério de pronto. Sem dados da empresa.</p>
+        <div class="prompt-tabs" role="tablist" aria-label="Exemplos de prompts">
+          <button class="ptab" role="tab" type="button" id="t-p1" aria-controls="p1" aria-selected="true" tabindex="0">Central de Engenharia<small>especificação de produto</small></button>
+          <button class="ptab" role="tab" type="button" id="t-p2" aria-controls="p2" aria-selected="false" tabindex="-1">Notas fiscais<small>regra de negócio + testes</small></button>
+          <button class="ptab" role="tab" type="button" id="t-p3" aria-controls="p3" aria-selected="false" tabindex="-1">Quiz ao vivo<small>escala e custo zero</small></button>
+          <button class="ptab" role="tab" type="button" id="t-p4" aria-controls="p4" aria-selected="false" tabindex="-1">Credenciamento<small>automação com Selenium</small></button>
+        </div>
 
-A ideia é que o site tenha os dados do Power BI para que eu possa,
-futuramente, compartilhar com outros setores.</code></pre>
-        <button class="copy mono" type="button">copiar</button>
-        <p class="prompt-res"><b>O que virou:</b> a Central de Engenharia, com cadastro de eventos, importação das planilhas e os painéis do Power BI refeitos no navegador.</p>
-      </div>
-      <div class="prompt-box" data-p="p2" hidden>
-        <div class="prompt-head mono"><span class="dot"></span><span class="dot"></span><span class="dot"></span> claude code · módulo de notas fiscais</div>
-        <pre class="mono"><code>Preciso que, na aba Contratos, além do saldo contratado, apareça o
-saldo atual, descontando o valor das medições do contrato.
-O valor deve ser: (contratado + aditivo) − medições.
+        <div class="prompt-box" role="tabpanel" id="p1" aria-labelledby="t-p1">
+          <div class="prompt-head"><span class="file"><b>claude code</b> · central-de-engenharia/spec.md</span><button class="copy" type="button">Copiar prompt</button></div>
+          <p class="prompt-original"><b>Pedido original (resumido):</b> Tenho um Power BI e uma planilha que o alimenta. Dá para ter isso na rede, num programa em Python/HTML/CSS, para compartilhar com outros setores?</p>
+<pre><code><span class="k"># CONTEXTO</span>
+Trabalho na Engenharia de uma arena de eventos (shows, jogos e projetos especiais).
+Os custos de cada evento (mão de obra, avarias, insumos e medidores de consumo)
+ficam numa planilha Excel que alimenta um Power BI. Só eu sei operar.
 
-Preciso de alerta para quando o saldo estiver acabando e também
-quando o contrato estiver quase vencendo.
+<span class="k"># OBJETIVO</span>
+Um web app interno que seja a fonte única desses dados e reproduza os painéis
+do Power BI no navegador, para que outros setores consultem sem depender de mim.
 
-Quero poder definir esses prazos numa aba de Configurações, e também
-os e-mails de envio (tanto o envio interno da nota fiscal quanto a
-solicitação de NF ao fornecedor).
+<span class="k"># REQUISITOS</span>
+1. Cadastro de eventos: data, categoria, gênero e público.
+2. Importação das planilhas de custo (.xlsx), validando colunas obrigatórias.
+3. Painéis de custo por evento, por tipo e comparação entre eventos.
+4. Exportação em Excel e PDF.
+5. Login com perfis (admin, editor, visitante) e histórico de alterações.
 
-Quero poder editar o registro e ter um botão para reenviar o e-mail,
-caso seja necessário.</code></pre>
-        <button class="copy mono" type="button">copiar</button>
-        <p class="prompt-res"><b>O que virou:</b> saldo atual calculado por contrato, alertas de saldo e de vencimento configuráveis, destinatários editáveis e reenvio do e-mail da medição.</p>
-      </div>
-      <div class="prompt-box" data-p="p3" hidden>
-        <div class="prompt-head mono"><span class="dot"></span><span class="dot"></span><span class="dot"></span> claude · quiz ao vivo</div>
-        <pre class="mono"><code>Quero fazer um site tipo o Kahoot para a apresentação de uma matéria
-na faculdade. Preciso que pelo menos 100 pessoas consigam se conectar.
-Pode ser por QR code ou algo assim, mas elas precisam acessar a tela
-pelo celular ou pelo computador, onde escolhem entre as 4 respostas.</code></pre>
-        <button class="copy mono" type="button">copiar</button>
-        <p class="prompt-res"><b>O que virou:</b> o Quiz ao vivo, sem servidor (WebRTC), com QR code, avatares, pontuação por velocidade, pódio e planilha de resultado. Usado nas oficinas da faculdade.</p>
+<span class="k"># RESTRIÇÕES</span>
+- Python + Flask + SQLite, rodando no notebook da empresa sem instalar servidor.
+- Interface em português, com a identidade visual da empresa.
+- Nenhum dado real em exemplos ou testes.
+
+<span class="k"># FORMA DE TRABALHO</span>
+Entregue em etapas: primeiro o modelo de dados para eu revisar, depois um módulo
+por vez. Antes de cada módulo, liste as suposições que está fazendo.
+
+<span class="k"># CRITÉRIOS DE PRONTO</span>
+- Os totais do app batem com os do Power BI para os mesmos eventos.
+- Um colega sem treinamento cadastra um evento em menos de 5 minutos.</code></pre>
+          <p class="prompt-res"><b>Resultado →</b> A Central de Engenharia: 5 módulos, ~20 usuários, relatório pós-evento de 1h30 para 30 minutos.</p>
+        </div>
+
+        <div class="prompt-box" role="tabpanel" id="p2" aria-labelledby="t-p2" hidden>
+          <div class="prompt-head"><span class="file"><b>claude code</b> · modulo-notas-fiscais.md</span><button class="copy" type="button">Copiar prompt</button></div>
+          <p class="prompt-original"><b>Pedido original (resumido):</b> Na aba Contratos, além do saldo contratado, quero o saldo atual descontando as medições, com alerta de saldo acabando e de contrato vencendo.</p>
+<pre><code><span class="k"># CONTEXTO</span>
+Módulo de Notas Fiscais e Contratos da Central. Cada contrato tem valor
+contratado, aditivos e medições mensais enviadas pelo fornecedor.
+
+<span class="k"># TAREFA</span>
+Mostrar o saldo atual ao lado do saldo contratado na aba Contratos.
+
+<span class="k"># REGRA DE NEGÓCIO</span>
+saldo_atual = (valor_contratado + soma_aditivos) − soma_medicoes
+
+<span class="k"># ALERTAS</span>
+- Saldo: quando saldo_atual ≤ X% do total do contrato.
+- Vencimento: quando faltarem N dias ou menos para o fim do contrato.
+X, N e os e-mails de envio ficam numa nova aba Configurações.
+
+<span class="k"># AÇÕES</span>
+- Editar uma medição já lançada, registrando a alteração no histórico.
+- Botão “Reenviar e-mail” em cada medição.
+
+<span class="k"># CASOS DE TESTE</span>
+1. R$ 100.000 + aditivo de R$ 20.000 − medições de R$ 90.000 → saldo R$ 30.000.
+2. Contrato sem medições → saldo igual ao contratado.
+3. Medição editada → saldo recalculado e alteração no histórico.
+
+<span class="k"># SAÍDA</span>
+Mostre o diff dos arquivos alterados e como testar cada caso.</code></pre>
+          <p class="prompt-res"><b>Resultado →</b> Saldo por contrato, alertas configuráveis e reenvio de e-mail: medições de NF centralizadas e com prazo controlado.</p>
+        </div>
+
+        <div class="prompt-box" role="tabpanel" id="p3" aria-labelledby="t-p3" hidden>
+          <div class="prompt-head"><span class="file"><b>claude</b> · quiz-ao-vivo.md</span><button class="copy" type="button">Copiar prompt</button></div>
+          <p class="prompt-original"><b>Pedido original (resumido):</b> Quero um site tipo Kahoot para uma apresentação. Pelo menos 100 pessoas, entrando por QR code, escolhendo entre 4 respostas.</p>
+<pre><code><span class="k"># OBJETIVO</span>
+Site de quiz ao vivo, estilo Kahoot, para uma apresentação na faculdade.
+
+<span class="k"># ESCALA</span>
+Até 100 participantes ao mesmo tempo, pelo celular ou computador.
+
+<span class="k"># FLUXO</span>
+1. O apresentador abre a sala e projeta um QR code.
+2. O participante escaneia e escolhe nome e avatar.
+3. Cada pergunta tem 4 alternativas e tempo limite;
+   pontua mais quem acerta mais rápido.
+4. No fim: pódio e planilha com o resultado de cada pessoa.
+
+<span class="k"># RESTRIÇÕES</span>
+- Custo zero: sem servidor pago, hospedagem estática (GitHub Pages).
+- Funcionar na rede da faculdade e no 4G.
+- HTML, CSS e JavaScript puros; perguntas fáceis de editar.
+
+<span class="k"># ANTES DE CODAR</span>
+Compare duas opções de comunicação em tempo real que atendam às restrições
+e recomende uma, com prós e contras.</code></pre>
+          <p class="prompt-res"><b>Resultado →</b> Quiz sem servidor (WebRTC), com QR code, pontuação por velocidade e pódio, pronto em ~2 dias.</p>
+        </div>
+
+        <div class="prompt-box" role="tabpanel" id="p4" aria-labelledby="t-p4" hidden>
+          <div class="prompt-head"><span class="file"><b>claude</b> · credenciamento-automatico.md</span><button class="copy" type="button">Copiar prompt</button></div>
+          <p class="prompt-original"><b>Ponto de partida:</b> credenciar à mão, pessoa por pessoa, a equipe de cada evento no portal.</p>
+<pre><code><span class="k"># CONTEXTO</span>
+A cada evento credencio cerca de 12 pessoas num portal web, preenchendo o mesmo
+formulário uma a uma: ~30 minutos por evento, de 4 a 10 eventos por mês.
+
+<span class="k"># OBJETIVO</span>
+App desktop em Python que faça esse preenchimento sozinho.
+
+<span class="k"># REQUISITOS</span>
+1. Cadastro local de colaboradores, com busca.
+2. Tela para marcar quem vai a cada evento.
+3. Selenium abre o portal, escolhe o evento e envia os cadastros em sequência.
+4. Log em tempo real, histórico com filtros e exportação em CSV.
+
+<span class="k"># ROBUSTEZ</span>
+- Esperas explícitas, nunca sleep fixo.
+- Se um cadastro falhar, registrar o erro e seguir para o próximo.
+- Nenhuma senha salva em texto puro.
+
+<span class="k"># CRITÉRIO DE PRONTO</span>
+12 pessoas credenciadas em menos de 5 minutos, rodando em segundo plano.</code></pre>
+          <p class="prompt-res"><b>Resultado →</b> De 30 para menos de 5 minutos por evento (85% menos tempo).</p>
+        </div>
       </div>
     </section>
 
@@ -300,14 +386,14 @@ pelo celular ou pelo computador, onde escolhem entre as 4 respostas.</code></pre
         <p class="eyebrow mono">03 / habilidades</p>
         <h2>Ferramentas que uso</h2>
       </div>
-      <div class="fund">
+      <div class="fund reveal">
         <div><h3>Algoritmos e grafos</h3><p>Estudo na faculdade: BFS/DFS, Dijkstra, PageRank e centralidade (proximidade e intermediação) aplicados a análise de redes.</p></div>
         <div><h3>Testes e qualidade</h3><p>Testes unitários parametrizados, de integração com banco real (Testcontainers) e E2E; cobertura acima de 88% e SonarCloud no Lybre.</p></div>
         <div><h3>Dados e modelagem</h3><p>Modelagem de banco (SQLite, MongoDB), modelo estrela no Power BI, DAX e visuais em Python.</p></div>
         <div><h3>Arquitetura web</h3><p>APIs REST (Flask, Spring Boot), autenticação JWT, perfis de acesso e comunicação em tempo real (WebRTC).</p></div>
       </div>
-      <div class="skills">
-        <div class="skill-group">
+      <div class="skills reveal">
+        <div class="skill-group hl">
           <h3>IA generativa</h3>
           <ul><li>Prompt engineering</li><li>Vibe coding</li><li>Claude Code (agente)</li><li>Claude</li></ul>
         </div>
@@ -317,7 +403,7 @@ pelo celular ou pelo computador, onde escolhem entre as 4 respostas.</code></pre
         </div>
         <div class="skill-group">
           <h3>Dados e automação</h3>
-          <ul><li>Power BI</li><li>Excel avançado</li><li>Macros/VBA</li><li>Monday.com</li><li>Dashboards e KPIs</li></ul>
+          <ul><li>Power BI</li><li>Excel avançado</li><li>Macros/VBA</li><li>Dashboards e KPIs</li></ul>
         </div>
         <div class="skill-group">
           <h3>Produto e negócio</h3>
@@ -331,7 +417,7 @@ pelo celular ou pelo computador, onde escolhem entre as 4 respostas.</code></pre
       <p class="eyebrow mono">04 / contato</p>
       <h2>Vamos construir algo?</h2>
       <p class="lead">Estou aberto a oportunidades em IA generativa, automação e dados.</p>
-      <ul class="contact-list">
+      <ul class="contact-list reveal">
         <li><span class="mono">e-mail</span><a href="mailto:limmuz.contato@gmail.com">limmuz.contato@gmail.com</a></li>
         <li><span class="mono">linkedin</span><a href="https://www.linkedin.com/in/miguel-luiz-lima-nascimento-9a5010258" target="_blank" rel="noopener">linkedin.com/in/miguel-luiz-lima-nascimento</a></li>
         <li><span class="mono">github</span><a href="https://github.com/limmuz" target="_blank" rel="noopener">github.com/limmuz</a></li>
@@ -347,6 +433,88 @@ pelo celular ou pelo computador, onde escolhem entre as 4 respostas.</code></pre
   </footer>
 
   <div class="toast mono" role="status" aria-live="polite"></div>
-  <script src="script.js"></script>
+  <script>
+// Placeholder para imagens que ainda não existem
+document.querySelectorAll('.shot img').forEach((img) => {
+  const toPlaceholder = () => {
+    const shot = img.parentElement;
+    shot.classList.add('placeholder');
+    const t = shot.parentElement.querySelector('h3');
+    shot.dataset.label = t ? t.textContent : '';
+    img.remove();
+  };
+  if (img.complete && img.naturalWidth === 0) toPlaceholder();
+  else img.addEventListener('error', toPlaceholder);
+});
+
+// Aviso rápido
+const toast = document.querySelector('.toast');
+let toastTimer;
+function showToast(msg) {
+  toast.textContent = msg; toast.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+// Filtros de projetos
+const chips = [...document.querySelectorAll('.chip')];
+const cards = [...document.querySelectorAll('#projetos .card')];
+const status = document.querySelector('.filter-status');
+const tagsOf = (c) => (c.dataset.tags || '').split(/\s+/);
+chips.forEach((chip) => {
+  const f = chip.dataset.filter;
+  const n = f === 'all' ? cards.length : cards.filter((c) => tagsOf(c).includes(f)).length;
+  chip.querySelector('.n').textContent = n;
+  chip.addEventListener('click', () => {
+    chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+    let visiveis = 0;
+    cards.forEach((card) => {
+      const show = f === 'all' || tagsOf(card).includes(f);
+      card.classList.toggle('is-hidden', !show);
+      card.classList.remove('enter');
+      if (show) { visiveis++; card.classList.add('in'); void card.offsetWidth; card.classList.add('enter'); }
+    });
+    status.textContent = f === 'all' ? '' : `Mostrando ${visiveis} de ${cards.length} projetos · ${chip.firstChild.textContent}`;
+  });
+});
+
+// Abas de prompts (com teclado: setas, Home e End)
+const tabs = [...document.querySelectorAll('.ptab')];
+function selectTab(t, focus) {
+  tabs.forEach((x) => {
+    const on = x === t;
+    x.setAttribute('aria-selected', String(on));
+    x.tabIndex = on ? 0 : -1;
+    document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+  });
+  if (focus) t.focus();
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => selectTab(t));
+  t.addEventListener('keydown', (e) => {
+    const map = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+    if (e.key in map) { e.preventDefault(); selectTab(tabs[(map[e.key] + tabs.length) % tabs.length], true); }
+  });
+});
+
+// Copiar prompt (com alternativa para navegadores sem a API de área de transferência)
+document.querySelectorAll('.copy').forEach((btn) => btn.addEventListener('click', async () => {
+  const text = btn.closest('.prompt-box').querySelector('code').innerText;
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch {
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand('copy'); } catch {}
+    ta.remove();
+  }
+  if (ok) { btn.textContent = 'Copiado ✓'; btn.classList.add('ok'); setTimeout(() => { btn.textContent = 'Copiar prompt'; btn.classList.remove('ok'); }, 1800); }
+  showToast(ok ? 'Prompt copiado' : 'Não foi possível copiar: selecione o texto');
+}));
+
+// Entrada suave ao rolar
+const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: .12 }) : null;
+document.querySelectorAll('.reveal').forEach((el) => io ? io.observe(el) : el.classList.add('in'));
+</script>
 </body>
 </html>
