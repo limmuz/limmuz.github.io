@@ -46,14 +46,15 @@ document.querySelectorAll('[data-placeholder]').forEach((a) => {
   });
 });
 
-// Copiar prompt de exemplo
-const copyBtn = document.querySelector('.copy');
-copyBtn?.addEventListener('click', async () => {
-  const text = document.querySelector('.prompt-box code').innerText;
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast('Prompt copiado');
-  } catch {
-    showToast('Selecione o texto e copie manualmente');
-  }
-});
+// Abas de prompts
+document.querySelectorAll('.ptab').forEach((t) => t.addEventListener('click', () => {
+  document.querySelectorAll('.ptab').forEach((x) => x.classList.toggle('active', x === t));
+  document.querySelectorAll('.prompt-box').forEach((b) => { b.hidden = b.dataset.p !== t.dataset.p; });
+}));
+
+// Copiar prompt
+document.querySelectorAll('.prompt-box .copy').forEach((btn) => btn.addEventListener('click', async () => {
+  const text = btn.closest('.prompt-box').querySelector('code').innerText;
+  try { await navigator.clipboard.writeText(text); showToast('Prompt copiado'); }
+  catch { showToast('Selecione o texto e copie manualmente'); }
+}));

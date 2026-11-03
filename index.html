@@ -68,7 +68,7 @@
           <div class="card-body">
             <div class="card-top">
               <span class="tag">Destaque</span>
-              <span class="status">Em uso</span>
+              <span class="status">Em uso</span><span class="status">1ª versão em ~2 dias</span>
             </div>
             <h3>Central de Engenharia</h3>
             <p class="summary">Sistema web interno que substitui planilhas, macros e controles manuais da área de Engenharia de uma arena de eventos. Prints com dados fictícios.</p>
@@ -80,7 +80,8 @@
             </dl>
             <ul class="stack mono"><li>Python</li><li>Flask</li><li>SQLite</li><li>JavaScript</li><li>Chart.js</li><li>Claude Code</li></ul>
             <div class="links">
-              <a href="https://github.com/limmuz/central-eventos" class="link" target="_blank" rel="noopener">{ } Código (versão demo)</a>
+              <a href="central-demo/" class="link" target="_blank" rel="noopener">▶ Usar a demo ao vivo</a>
+              <a href="https://github.com/limmuz/central-eventos" class="link" target="_blank" rel="noopener">{ } Código</a>
             </div>
           </div>
         </article>
@@ -91,6 +92,7 @@
             <img src="img/quiz-ao-vivo.png" alt="Tela do quiz ao vivo" loading="lazy">
           </div>
           <div class="card-body">
+            <div class="card-top"><span class="status">1ª versão em ~2 dias</span></div>
             <h3>Quiz ao vivo multiplayer</h3>
             <p class="summary">Plataforma estilo Kahoot para apresentações e aulas, com acesso por QR code.</p>
             <dl class="psr">
@@ -216,18 +218,53 @@
         </li>
       </ol>
 
-      <div class="prompt-box">
-        <div class="prompt-head mono"><span class="dot"></span><span class="dot"></span><span class="dot"></span> exemplo de prompt</div>
-        <pre class="mono"><code>Contexto: sou da área de Engenharia de uma arena de eventos.
-Tarefa: crie um módulo web para medição de notas fiscais.
-Dados: a planilha tem as colunas Contrato, Fornecedor, Nº NF, Valor, Data.
-Regras:
-- ao marcar uma NF como "medida", gerar o e-mail padrão para o fornecedor;
-- registrar quais notas já foram medidas, por contrato;
-- cada usuário vê apenas a aba do seu time.
-Pronto quando: consigo subir a planilha, medir 3 notas e ver os e-mails gerados.
-Trabalhe em etapas e me mostre cada arquivo alterado.</code></pre>
+      <p class="prompts-intro">Prompts reais que usei nos projetos (com pequenas correções de digitação e sem dados da empresa). Eu começo pelo problema e pelo resultado que quero, e vou refinando com regras de negócio a cada entrega.</p>
+      <div class="prompt-tabs" role="tablist">
+        <button class="ptab active" data-p="p1" type="button">Central · pedido inicial</button>
+        <button class="ptab" data-p="p2" type="button">Central · regra de negócio</button>
+        <button class="ptab" data-p="p3" type="button">Quiz ao vivo</button>
+      </div>
+      <div class="prompt-box" data-p="p1">
+        <div class="prompt-head mono"><span class="dot"></span><span class="dot"></span><span class="dot"></span> claude code · central de engenharia</div>
+        <pre class="mono"><code>Tenho um Power BI e uma planilha com as informações que o alimentam.
+Você me ajuda a reestruturar? Gostaria de deixar o Excel mais bonito
+(assim como o Power BI), mas, se possível, podemos ter isso na rede?
+Por exemplo: um programa em Python/HTML/CSS onde eu possa inserir as
+informações necessárias (hoje, tudo o que o Power BI usa eu coloco
+nessa planilha). Quero a opção de anexar também as planilhas de custo
+de cada evento.
+
+A ideia é que o site tenha os dados do Power BI para que eu possa,
+futuramente, compartilhar com outros setores.</code></pre>
         <button class="copy mono" type="button">copiar</button>
+        <p class="prompt-res"><b>O que virou:</b> a Central de Engenharia, com cadastro de eventos, importação das planilhas e os painéis do Power BI refeitos no navegador.</p>
+      </div>
+      <div class="prompt-box" data-p="p2" hidden>
+        <div class="prompt-head mono"><span class="dot"></span><span class="dot"></span><span class="dot"></span> claude code · módulo de notas fiscais</div>
+        <pre class="mono"><code>Preciso que, na aba Contratos, além do saldo contratado, apareça o
+saldo atual, descontando o valor das medições do contrato.
+O valor deve ser: (contratado + aditivo) − medições.
+
+Preciso de alerta para quando o saldo estiver acabando e também
+quando o contrato estiver quase vencendo.
+
+Quero poder definir esses prazos numa aba de Configurações, e também
+os e-mails de envio (tanto o envio interno da nota fiscal quanto a
+solicitação de NF ao fornecedor).
+
+Quero poder editar o registro e ter um botão para reenviar o e-mail,
+caso seja necessário.</code></pre>
+        <button class="copy mono" type="button">copiar</button>
+        <p class="prompt-res"><b>O que virou:</b> saldo atual calculado por contrato, alertas de saldo e de vencimento configuráveis, destinatários editáveis e reenvio do e-mail da medição.</p>
+      </div>
+      <div class="prompt-box" data-p="p3" hidden>
+        <div class="prompt-head mono"><span class="dot"></span><span class="dot"></span><span class="dot"></span> claude · quiz ao vivo</div>
+        <pre class="mono"><code>Quero fazer um site tipo o Kahoot para a apresentação de uma matéria
+na faculdade. Preciso que pelo menos 100 pessoas consigam se conectar.
+Pode ser por QR code ou algo assim, mas elas precisam acessar a tela
+pelo celular ou pelo computador, onde escolhem entre as 4 respostas.</code></pre>
+        <button class="copy mono" type="button">copiar</button>
+        <p class="prompt-res"><b>O que virou:</b> o Quiz ao vivo, sem servidor (WebRTC), com QR code, avatares, pontuação por velocidade, pódio e planilha de resultado. Usado nas oficinas da faculdade.</p>
       </div>
     </section>
 

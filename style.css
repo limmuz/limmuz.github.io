@@ -210,3 +210,13 @@ main { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
   .contact-list li { grid-template-columns: 1fr; gap: 2px; }
   .footer { flex-direction: column; gap: 6px; }
 }
+
+/* ===== Prompts reais ===== */
+.prompts-intro { color: var(--muted); max-width: 70ch; margin-top: 28px; }
+.prompt-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 12px; }
+.ptab { font: 500 14px var(--font-body); cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--muted); padding: 7px 14px; border-radius: 999px; }
+.ptab.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.prompt-box[hidden] { display: none; }
+.prompt-res { padding: 0 20px 20px; font-size: 14px; color: #C9C4D3; }
+.prompt-res b { color: var(--lime); font-weight: 600; }
+.card-top .status + .status { margin-left: 0; }
