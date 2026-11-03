@@ -134,38 +134,20 @@
 
         <!-- 5 -->
         <article class="card reveal" data-tags="dados ia auto">
-          <div class="shot">
-            <img src="img/relatorios.png" alt="Visual em Python no Power BI" loading="lazy">
-          </div>
+          <div class="shot gal"><ul class="gal-track" tabindex="0" aria-label="Galeria de imagens: use as setas para navegar"><li><img src="img/powerbi/01.jpg" alt="Power BI: custos por evento com MDO, avarias e medidores" loading="lazy" width="1600" height="900"></li><li><img src="img/powerbi/02.jpg" alt="Power BI: manutenção com tempo médio e SLA dos chamados" loading="lazy" width="1600" height="900"></li><li><img src="img/powerbi/03.jpg" alt="Power BI: medidores de consumo e ranking de eventos" loading="lazy" width="1600" height="900"></li><li><img src="img/relatorios.png" alt="Visual em Python dentro do Power BI" loading="lazy" width="1600" height="900"></li></ul></div>
           <div class="card-body">
             <div class="card-top"><span class="badge time">Feito em ~1 mês</span></div>
-            <h3>Relatórios automatizados</h3>
-            <p class="summary">Visuais em Python no Power BI e um template de PowerPoint gerado por código. Prints com dados fictícios.</p>
+            <h3>Power BI de custos de eventos e relatórios automatizados</h3>
+            <p class="summary">Dashboard de custos, manutenção e consumo por evento, com visuais em Python e template de PowerPoint gerado por código. Prints com dados fictícios.</p>
             <dl class="psr">
               <div><dt>Problema</dt><dd>As apresentações pós-evento eram montadas à mão e os visuais padrão do Power BI não seguiam a marca.</dd></div>
-              <div><dt>Solução</dt><dd>Gráficos em matplotlib dentro do Power BI e um template de 10 slides (KPIs, rankings, comparativos) gerado com Node.js.</dd></div>
-              <div><dt>Resultado</dt><dd>Base usada para acompanhar o consumo de utilidades e apoiar o planejamento do orçamento do ano seguinte.</dd></div>
+              <div><dt>Solução</dt><dd>Modelo estrela com tabelas fato de itens, consumos e chamados ligadas por ID a eventos, medidores e calendário; medidas DAX como CALCULATE, SUMX, TOTALYTD, DATEADD e RANKX; gráficos em matplotlib e um template de 10 slides gerado com Node.js.</dd></div>
+              <div><dt>Resultado</dt><dd>Base usada para acompanhar custos, SLA de manutenção e consumo de utilidades, e para apoiar o orçamento do ano seguinte.</dd></div>
             </dl>
-            <ul class="stack mono"><li>Power BI</li><li>Python</li><li>Node.js</li><li>pptxgenjs</li></ul>
+            <ul class="stack mono"><li>Power BI</li><li>DAX</li><li>Power Query</li><li>Python</li><li>Node.js</li><li>pptxgenjs</li></ul>
           </div>
         </article>
 
-
-        <!-- Power BI -->
-        <article class="card reveal" data-tags="dados">
-          <div class="shot gal"><ul class="gal-track" tabindex="0" aria-label="Galeria de imagens: use as setas para navegar"><li><img src="img/powerbi/01.jpg" alt="Power BI: custos por evento com MDO, avarias e medidores" loading="lazy" width="1600" height="900"></li><li><img src="img/powerbi/02.jpg" alt="Power BI: manutenção com tempo médio e SLA dos chamados" loading="lazy" width="1600" height="900"></li><li><img src="img/powerbi/03.jpg" alt="Power BI: medidores de consumo e ranking de eventos" loading="lazy" width="1600" height="900"></li></ul></div>
-          <div class="card-body">
-            <div class="card-top"><span class="badge">Dados fictícios</span></div>
-            <h3>Painel Power BI de custos de eventos</h3>
-            <p class="summary">Dashboard com o mesmo visual da Central, montado sobre uma base Excel com 10 tabelas relacionadas.</p>
-            <dl class="psr">
-              <div><dt>Modelo</dt><dd>Esquema estrela: 3 tabelas fato (itens, consumos e chamados) ligadas por ID a eventos, categorias, gêneros, itens, medidores e calendário.</dd></div>
-              <div><dt>DAX</dt><dd>29 medidas: custo por tipo com CALCULATE, SUMX com RELATED, acumulado no ano (TOTALYTD), comparação com o mês anterior (DATEADD), ranking (RANKX) e % no SLA.</dd></div>
-              <div><dt>Páginas</dt><dd>Custos por evento, manutenção com SLA de 60 minutos, e medidores com ranking de eventos.</dd></div>
-            </dl>
-            <ul class="stack mono"><li>Power BI</li><li>DAX</li><li>Power Query</li><li>Modelagem estrela</li><li>Excel</li></ul>
-          </div>
-        </article>
 
         <!-- Make + monday -->
         <article class="card reveal" data-tags="auto">
