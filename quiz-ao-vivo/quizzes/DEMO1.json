@@ -1,0 +1,10 @@
+{
+  "title": "Quiz: IA Generativa",
+  "code": "DEMO1",
+  "questions": [
+    {"text": "O que é prompt engineering?", "options": ["Escrever instruções claras para um modelo de IA", "Consertar o hardware do computador", "Criar senhas fortes", "Editar vídeos"], "correct": 0, "time": 20},
+    {"text": "Qual destas é uma linguagem de programação?", "options": ["HTML", "Python", "Excel", "Figma"], "correct": 1, "time": 20},
+    {"text": "O que um agente de IA consegue fazer?", "options": ["Só responder perguntas", "Só gerar imagens", "Executar tarefas em etapas usando ferramentas", "Nada sem internet"], "correct": 2, "time": 20},
+    {"text": "Para que serve uma API?", "options": ["Desenhar telas", "Guardar fotos", "Deixar o computador mais rápido", "Permitir que sistemas troquem dados"], "correct": 3, "time": 20}
+  ]
+}
