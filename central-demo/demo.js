@@ -32,6 +32,11 @@
     const a = document.createElement("a"); a.href = "downloads/" + arq; a.download = arq; document.body.append(a); a.click(); a.remove();
   };
   window.demoBaixar = baixar;
+  // Demo: sem login. Esconde "Entrar na conta"/"Sair" e qualquer tela de acesso.
+  const css = document.createElement("style");
+  css.textContent = "#btn-cadeado,.lp-btn,[data-login],[data-admin]{display:none!important}";
+  document.documentElement.appendChild(css);
+
   // links diretos para a API (ex.: "Exportar Excel", "Baixar modelo") também baixam a planilha de exemplo
   document.addEventListener("click", (e) => {
     const a = e.target.closest && e.target.closest('a[href^="api/"]');

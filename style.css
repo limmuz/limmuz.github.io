@@ -274,3 +274,38 @@ main { max-width: 1160px; margin: 0 auto; padding: 0 var(--space-3); }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ===== Galeria dos projetos ===== */
+.gal { aspect-ratio: 16 / 9; }
+.gal-track { list-style: none; display: flex; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+.gal-track::-webkit-scrollbar { display: none; }
+.gal-track li { flex: 0 0 100%; height: 100%; scroll-snap-align: start; }
+.gal-track img { width: 100%; height: 100%; object-fit: cover; object-position: top; cursor: zoom-in; }
+.gal-track:focus-visible { outline-offset: -4px; }
+.gal-btn {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(5, 7, 12, .88); color: var(--text); border: 1.5px solid var(--line-strong);
+  font-size: 20px; line-height: 1; cursor: pointer; transition: background .15s, border-color .15s, opacity .15s;
+}
+.gal-btn:hover { background: var(--blue); color: var(--on-blue); border-color: var(--blue); }
+.gal-btn:disabled { opacity: .35; cursor: default; }
+.gal-btn:disabled:hover { background: rgba(5, 7, 12, .88); color: var(--text); border-color: var(--line-strong); }
+.gal-prev { left: 12px; } .gal-next { right: 12px; }
+.gal-bar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 14px; background: linear-gradient(transparent, rgba(5, 7, 12, .92) 45%); }
+.gal-cap { font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gal-dots { display: flex; gap: 4px; flex-shrink: 0; }
+.gal-dots button { width: 24px; height: 24px; border: 0; background: none; cursor: pointer; display: grid; place-items: center; padding: 0; }
+.gal-dots button::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #5E7499; transition: width .2s, background .2s; }
+.gal-dots button[aria-current="true"]::before { width: 18px; border-radius: 4px; background: var(--cyan); }
+.gal-count { font: 500 12px var(--font-mono); color: var(--text); background: rgba(5, 7, 12, .88); border: 1px solid var(--line-strong); padding: 2px 8px; border-radius: 999px; position: absolute; top: 12px; right: 12px; z-index: 2; }
+.card:hover .gal-track img { transform: none; }
+
+/* Tela cheia */
+.lb { position: fixed; inset: 0; z-index: 60; background: rgba(2, 4, 8, .95); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px 72px; }
+.lb.open { display: flex; }
+.lb img { max-width: 100%; max-height: calc(100vh - 120px); border-radius: 10px; border: 1px solid var(--line-strong); }
+.lb p { margin-top: 14px; color: var(--text); font-size: 15px; text-align: center; }
+.lb .gal-btn { position: fixed; }
+.lb-close { position: fixed; top: 16px; right: 16px; transform: none; }
+@media (max-width: 760px) { .lb { padding: 16px; } .gal-cap { display: none; } }

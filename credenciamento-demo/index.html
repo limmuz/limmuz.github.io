@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credenciamento automático · demo</title>
+<style>
+  :root { --p: #8d0de3; --pd: #420465; --pl: #cba5fd; --pp: #ecdfff; --ok: #174006; --okl: #c9e2bf; --bad: #8a1f40; --badl: #f7dde5; --tx: #2a0340; --tx2: #4a3a5c; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font: 14px/1.5 "Segoe UI", system-ui, sans-serif; background: var(--pp); color: var(--tx); min-height: 100vh; }
+  button { font: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid #0b57d0; outline-offset: 2px; }
+  .demo { background: #0B111C; color: #F3F6FB; text-align: center; padding: 8px 12px; font-size: 13px; font-weight: 600; }
+  .demo a { color: #8EC1FF; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 16px; }
+  .topo { background: var(--p); color: #fff; border-radius: 6px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .topo h1 { font-size: 20px; letter-spacing: .02em; }
+  .topo p { font-size: 13px; color: #f3e8ff; }
+  .stats { background: var(--pd); padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 13px; }
+  .tabs { display: flex; gap: 4px; margin-top: 14px; flex-wrap: wrap; }
+  .tab { background: #fff; border: 1px solid var(--pl); border-bottom: 0; padding: 8px 16px; border-radius: 6px 6px 0 0; color: var(--pd); font-weight: 600; min-height: 40px; }
+  .tab[aria-selected="true"] { background: var(--p); color: #fff; border-color: var(--p); }
+  .painel { background: #fff; border: 1px solid var(--pl); border-radius: 0 6px 6px 6px; padding: 16px; }
+  .painel[hidden] { display: none; }
+  .cols { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; }
+  fieldset { border: 1px solid var(--pl); border-radius: 6px; padding: 12px; }
+  legend { font-weight: 700; color: var(--pd); padding: 0 6px; }
+  .barra { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .btn { border: 0; border-radius: 4px; padding: 8px 14px; font-weight: 600; min-height: 38px; }
+  .btn-sec { background: var(--pl); color: var(--tx); }
+  .btn-pri { background: var(--p); color: #fff; }
+  .btn-ok { background: var(--ok); color: #fff; }
+  .btn-bad { background: var(--bad); color: #fff; }
+  .btn:disabled { opacity: .55; cursor: not-allowed; }
+  .conta { margin-left: auto; color: var(--p); font-weight: 700; }
+  .dica { font-size: 13px; color: var(--tx2); margin-bottom: 8px; }
+  .tabela { max-height: 420px; overflow: auto; border: 1px solid var(--pl); }
+  table { width: 100%; border-collapse: collapse; }
+  th { position: sticky; top: 0; background: var(--pd); color: #fff; text-align: left; padding: 7px 10px; font-size: 13px; }
+  td { padding: 6px 10px; border-bottom: 1px solid #efe6ff; font-size: 14px; }
+  tbody tr { cursor: pointer; }
+  tbody tr.sel { background: var(--okl); }
+  tbody tr:hover { background: #f4ecff; }
+  tbody tr.sel:hover { background: #b9d9ab; }
+  .falha td { background: var(--badl); }
+  .ok td { background: #e6f2e0; }
+  .prog { height: 18px; background: var(--pp); border: 1px solid var(--pl); border-radius: 4px; overflow: hidden; margin: 6px 0 4px; }
+  .prog i { display: block; height: 100%; width: 0; background: var(--p); transition: width .3s; }
+  .prog-txt { text-align: center; color: var(--pd); font-weight: 600; font-size: 13px; }
+  .log { font: 13px/1.6 Consolas, "Courier New", monospace; background: #fcfaff; border: 1px solid var(--pl); height: 180px; overflow: auto; padding: 8px; white-space: pre-wrap; }
+  .portal { margin-top: 12px; border: 2px dashed var(--pl); border-radius: 6px; padding: 12px; background: #fafafa; }
+  .portal h3 { font-size: 14px; color: var(--tx2); margin-bottom: 8px; display: flex; justify-content: space-between; gap: 8px; }
+  .portal h3 span { font-weight: 400; }
+  .campo { display: grid; grid-template-columns: 110px 1fr; gap: 8px; align-items: center; margin-bottom: 6px; font-size: 13px; }
+  .campo div { border: 1px solid #c8c8c8; background: #fff; border-radius: 3px; min-height: 28px; padding: 3px 8px; font-family: Consolas, monospace; }
+  .campo div.ativo { border-color: var(--p); box-shadow: 0 0 0 2px #e7d4ff; }
+  .enviar { margin-top: 6px; text-align: right; font-size: 13px; color: var(--tx2); }
+  .filtros { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 10px; }
+  .filtros label { display: flex; flex-direction: column; font-size: 13px; color: var(--tx2); gap: 2px; }
+  input, select { font: inherit; padding: 6px 8px; border: 1px solid #9c8ab3; border-radius: 4px; min-height: 36px; }
+  .info { font-family: Consolas, monospace; font-size: 13px; background: #fcfaff; border: 1px solid var(--pl); padding: 12px; white-space: pre-wrap; }
+  dialog { border: 0; border-radius: 8px; padding: 20px; max-width: 420px; width: 92vw; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+  dialog::backdrop { background: rgba(20, 0, 40, .5); }
+  dialog h2 { font-size: 16px; color: var(--pd); margin-bottom: 10px; }
+  .opc { display: flex; gap: 8px; align-items: center; padding: 8px; border: 1px solid var(--pl); border-radius: 6px; margin-bottom: 6px; cursor: pointer; }
+  .acoes { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+  @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="demo">Simulação web do app desktop (Python + Tkinter + Selenium) · dados fictícios · o “portal” abaixo é de exemplo · <a href="https://github.com/limmuz/credenciamento-automatico" target="_blank" rel="noopener">ver código</a> · <a href="../#projetos">voltar ao portfólio</a></div>
+<div class="wrap">
+  <header class="topo">
+    <div><h1>AUTOMATIZADOR DE CREDENCIAMENTO</h1><p>Gestão de acessos e eventos</p></div>
+    <span class="stats" id="stats"></span>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="tab-cred" id="b-cred">Credenciamento</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-hist" id="b-hist" tabindex="-1">Histórico</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-conf" id="b-conf" tabindex="-1">Configurações</button>
+  </div>
+
+  <section class="painel" id="tab-cred" role="tabpanel" aria-labelledby="b-cred">
+    <div class="cols">
+      <fieldset>
+        <legend>Seleção de Colaboradores</legend>
+        <div class="barra">
+          <button class="btn btn-sec" id="todos">Selecionar Todos</button>
+          <button class="btn btn-sec" id="nenhum">Desmarcar Todos</button>
+          <span class="conta" id="conta" aria-live="polite">0 selecionado(s)</span>
+        </div>
+        <p class="dica">Clique na linha para incluir ou tirar o colaborador do credenciamento.</p>
+        <div class="tabela"><table><thead><tr><th scope="col">✓</th><th scope="col">Nome do Colaborador</th><th scope="col">Cargo/Departamento</th></tr></thead><tbody id="lista"></tbody></table></div>
+      </fieldset>
+      <div>
+        <fieldset>
+          <legend>Controles</legend>
+          <div class="barra">
+            <button class="btn btn-ok" id="iniciar">▶ Iniciar Credenciamento</button>
+            <button class="btn btn-bad" id="parar" disabled>■ Parar Execução</button>
+          </div>
+          <b style="font-size:13px">Progresso:</b>
+          <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progbar"><i id="prog"></i></div>
+          <div class="prog-txt" id="progtxt">Pronto</div>
+        </fieldset>
+        <fieldset style="margin-top:12px">
+          <legend>Log de Execução</legend>
+          <div class="log" id="log" aria-live="polite"></div>
+        </fieldset>
+        <div class="portal" aria-label="Portal de credenciamento de exemplo">
+          <h3>Portal de credenciamento (exemplo) <span id="portal-ev">nenhum evento</span></h3>
+          <div class="campo"><span>Nome</span><div id="f-nome"></div></div>
+          <div class="campo"><span>Documento</span><div id="f-doc"></div></div>
+          <div class="campo"><span>Função</span><div id="f-cargo"></div></div>
+          <div class="campo"><span>Empresa</span><div id="f-emp"></div></div>
+          <p class="enviar" id="f-status">Aguardando</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="painel" id="tab-hist" role="tabpanel" aria-labelledby="b-hist" hidden>
+    <fieldset>
+      <legend>Filtros para Exportação</legend>
+      <div class="filtros">
+        <label>Data início <input type="date" id="h-de"></label>
+        <label>Data fim <input type="date" id="h-ate"></label>
+        <label>Evento <select id="h-ev"><option value="">Todos</option></select></label>
+        <button class="btn btn-pri" id="h-aplicar">Aplicar Filtros</button>
+        <button class="btn btn-ok" id="h-csv">Exportar CSV</button>
+        <button class="btn btn-bad" id="h-limpar">Limpar Histórico</button>
+      </div>
+    </fieldset>
+    <div class="tabela" style="margin-top:12px"><table><thead><tr><th scope="col">Data/Hora</th><th scope="col">Colaborador</th><th scope="col">Status</th><th scope="col">Evento</th></tr></thead><tbody id="hist"></tbody></table></div>
+  </section>
+
+  <section class="painel" id="tab-conf" role="tabpanel" aria-labelledby="b-conf" hidden>
+    <div class="cols">
+      <fieldset>
+        <legend>Configurações Atuais</legend>
+        <div class="info">Portal:            https://portal-exemplo.com.br/credenciamento
+Navegador:         Chrome (segundo plano)
+Espera por campo:  explícita, até 15 s
+Em caso de falha:  registra o erro e segue para o próximo
+Senha do portal:   guardada no cofre do sistema (não em texto)
+Colaboradores:     colaboradores.csv</div>
+      </fieldset>
+      <fieldset>
+        <legend>Adicionar colaborador</legend>
+        <form id="add" class="filtros" style="flex-direction:column;align-items:stretch">
+          <label>Nome <input required id="a-nome" placeholder="Nome completo"></label>
+          <label>Cargo/Departamento <input required id="a-cargo" placeholder="Ex.: Elétrica"></label>
+          <button class="btn btn-pri" type="submit">Adicionar à lista</button>
+          <p class="dica">Na demo, o colaborador fica só nesta aba do navegador.</p>
+        </form>
+      </fieldset>
+    </div>
+  </section>
+</div>
+
+<dialog id="dlg">
+  <h2>Selecione o evento para credenciar:</h2>
+  <form method="dialog" id="dlg-form"></form>
+</dialog>
+
+<script>
+const colabs = [["Ana Souza","Hidráulica"],["Bruno Lima","Hidráulica"],["Carla Mendes","Facilities"],["Diego Ferreira","Engenharia"],["Elisa Rocha","Engenharia"],["Felipe Alves","Facilities"],["Gabriela Costa","Climatização"],["Heitor Martins","Elétrica"],["Isabela Ramos","Facilities"],["João Pereira","Facilities"],["Larissa Gomes","Manutenção"],["Marcos Ribeiro","Facilities"],["Natália Duarte","Hidráulica"],["Otávio Barros","Engenharia"],["Paula Nogueira","Hidráulica"],["Rafael Teixeira","Elétrica"],["Sabrina Castro","Climatização"],["Tiago Moreira","Climatização"],["Vanessa Pinto","Engenharia"],["Wagner Freitas","Climatização"]].map(([nome, cargo], i) => ({ nome, cargo, doc: "000.000.000-" + String(i + 1).padStart(2, "0"), sel: i < 12 }));
+const eventos = ["Show — Artista Exemplo (12/10)", "Jogo — Time A x Time B (19/10)", "Festival Demo (26/10)"];
+const $ = (id) => document.getElementById(id);
+const hist = [];
+const agora = new Date();
+// histórico inicial fictício
+colabs.slice(0, 10).forEach((c, i) => hist.push({ data: new Date(agora - 86400000 * 7 + i * 60000), nome: c.nome, ok: i !== 3, ev: "Show — Artista Exemplo (05/10)" }));
+
+function stats() { $("stats").textContent = `${colabs.length} colaboradores | ${new Set(colabs.map((c) => c.cargo)).size} cargos`; }
+function lista() {
+  $("lista").innerHTML = "";
+  colabs.forEach((c, i) => {
+    const tr = document.createElement("tr");
+    tr.className = c.sel ? "sel" : ""; tr.tabIndex = 0; tr.setAttribute("aria-selected", c.sel);
+    tr.innerHTML = `<td>${c.sel ? "☑" : "☐"}</td><td>${c.nome}</td><td>${c.cargo}</td>`;
+    const alterna = () => { if (rodando) return; c.sel = !c.sel; lista(); document.querySelectorAll("#lista tr")[i].focus(); };
+    tr.onclick = alterna; tr.onkeydown = (e) => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); alterna(); } };
+    $("lista").append(tr);
+  });
+  $("conta").textContent = colabs.filter((c) => c.sel).length + " selecionado(s)";
+}
+const hora = () => new Date().toTimeString().slice(0, 8);
+function log(t) { $("log").textContent += `[${hora()}] ${t}\n`; $("log").scrollTop = 1e9; }
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function digitar(id, texto) {
+  const el = $(id); el.classList.add("ativo"); el.textContent = "";
+  for (const ch of texto) { if (parar) return; el.textContent += ch; await espera(14); }
+  el.classList.remove("ativo");
+}
+
+let rodando = false, parar = false;
+$("todos").onclick = () => { if (!rodando) { colabs.forEach((c) => (c.sel = true)); lista(); } };
+$("nenhum").onclick = () => { if (!rodando) { colabs.forEach((c) => (c.sel = false)); lista(); } };
+$("parar").onclick = () => { parar = true; log("⏹ Parada solicitada pelo usuário"); };
+
+$("iniciar").onclick = () => {
+  const sel = colabs.filter((c) => c.sel);
+  if (!sel.length) { log("⚠ Selecione pelo menos um colaborador"); return; }
+  const f = $("dlg-form");
+  f.innerHTML = eventos.map((e, i) => `<label class="opc"><input type="radio" name="ev" value="${i}" ${i ? "" : "checked"}> ${e}</label>`).join("") +
+    `<div class="acoes"><button class="btn btn-sec" value="cancel">Cancelar</button><button class="btn btn-pri" value="ok">Confirmar</button></div>`;
+  $("dlg").showModal();
+};
+$("dlg").addEventListener("close", () => {
+  if ($("dlg").returnValue !== "ok") return;
+  const ev = eventos[+new FormData($("dlg-form")).get("ev")];
+  executar(colabs.filter((c) => c.sel), ev);
+});
+
+async function executar(sel, ev) {
+  rodando = true; parar = false;
+  $("iniciar").disabled = true; $("parar").disabled = false;
+  $("log").textContent = "";
+  log(`✓ ${colabs.length} colaboradores carregados`);
+  log("🚀 Abrindo o portal em segundo plano (Selenium)");
+  await espera(500);
+  log(`📅 Evento selecionado: ${ev} (${sel.length} pessoas)`);
+  $("portal-ev").textContent = ev;
+  let ok = 0;
+  for (let i = 0; i < sel.length && !parar; i++) {
+    const c = sel[i];
+    $("f-status").textContent = "Preenchendo…";
+    await digitar("f-nome", c.nome); await digitar("f-doc", c.doc); await digitar("f-cargo", c.cargo); await digitar("f-emp", "Arena Demo");
+    if (parar) break;
+    const falhou = i === 4 && sel.length > 6;
+    $("f-status").textContent = falhou ? "✗ Recusado pelo portal" : "✓ Enviado";
+    if (falhou) log(`✗ ${c.nome}: dados recusados pelo portal, seguindo para o próximo`);
+    else { ok++; log(`✓ ${c.nome} credenciado`); }
+    hist.unshift({ data: new Date(), nome: c.nome, ok: !falhou, ev });
+    const pct = ((i + 1) / sel.length) * 100;
+    $("prog").style.width = pct + "%"; $("progbar").setAttribute("aria-valuenow", Math.round(pct));
+    $("progtxt").textContent = `${i + 1}/${sel.length} (${pct.toFixed(1)}%)`;
+    await espera(250);
+  }
+  $("progtxt").textContent = `Concluído: ${ok}/${sel.length}`;
+  log(`🏁 Finalizado: ${ok} de ${sel.length} credenciados. Tempo real no app: menos de 5 minutos por evento.`);
+  rodando = false; $("iniciar").disabled = false; $("parar").disabled = true;
+  ["f-nome", "f-doc", "f-cargo", "f-emp"].forEach((id) => ($(id).textContent = ""));
+  $("f-status").textContent = "Aguardando";
+  histTabela();
+}
+
+// Histórico
+function filtrado() {
+  const de = $("h-de").value ? new Date($("h-de").value + "T00:00") : null;
+  const ate = $("h-ate").value ? new Date($("h-ate").value + "T23:59") : null;
+  const ev = $("h-ev").value;
+  return hist.filter((h) => (!de || h.data >= de) && (!ate || h.data <= ate) && (!ev || h.ev === ev));
+}
+const fmt = (d) => d.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+function histTabela() {
+  const evs = [...new Set(hist.map((h) => h.ev))];
+  const atual = $("h-ev").value;
+  $("h-ev").innerHTML = '<option value="">Todos</option>' + evs.map((e) => `<option ${e === atual ? "selected" : ""}>${e}</option>`).join("");
+  $("hist").innerHTML = filtrado().map((h) => `<tr class="${h.ok ? "ok" : "falha"}"><td>${fmt(h.data)}</td><td>${h.nome}</td><td>${h.ok ? "Sucesso" : "Falha: dados recusados"}</td><td>${h.ev}</td></tr>`).join("") ||
+    '<tr><td colspan="4">Nenhum registro.</td></tr>';
+}
+$("h-aplicar").onclick = histTabela;
+$("h-limpar").onclick = () => { hist.length = 0; histTabela(); };
+$("h-csv").onclick = () => {
+  const linhas = [["Data/Hora", "Colaborador", "Status", "Evento"], ...filtrado().map((h) => [fmt(h.data), h.nome, h.ok ? "Sucesso" : "Falha", h.ev])];
+  const csv = "﻿" + linhas.map((l) => l.map((x) => `"${String(x).replace(/"/g, '""')}"`).join(";")).join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = "historico-credenciamento-demo.csv"; a.click();
+};
+
+// Configurações
+$("add").onsubmit = (e) => { e.preventDefault(); colabs.push({ nome: $("a-nome").value.trim(), cargo: $("a-cargo").value.trim(), doc: "000.000.000-" + String(colabs.length + 1).padStart(2, "0"), sel: true }); e.target.reset(); stats(); lista(); log("✓ Colaborador adicionado"); };
+
+// Abas
+const tabs = [...document.querySelectorAll(".tab")];
+tabs.forEach((t, i) => {
+  const ir = (x) => { tabs.forEach((y) => { const on = y === x; y.setAttribute("aria-selected", on); y.tabIndex = on ? 0 : -1; $(y.getAttribute("aria-controls")).hidden = !on; }); if (x.id === "b-hist") histTabela(); x.focus(); };
+  t.onclick = () => ir(t);
+  t.onkeydown = (e) => { if (e.key === "ArrowRight") ir(tabs[(i + 1) % tabs.length]); if (e.key === "ArrowLeft") ir(tabs[(i + tabs.length - 1) % tabs.length]); };
+});
+
+stats(); lista(); log("✓ Aplicação pronta para uso"); histTabela();
+</script>
+</body>
+</html>

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <meta name="theme-color" content="#05070C">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <a href="#projetos" class="skip">Pular para os projetos</a>
@@ -59,6 +59,7 @@
         <div class="filters" role="group" aria-label="Filtrar projetos">
           <button class="chip" type="button" data-filter="all" aria-pressed="true">Todos<span class="n"></span></button>
           <button class="chip" type="button" data-filter="ia" aria-pressed="false">Feito com IA<span class="n"></span></button>
+          <button class="chip" type="button" data-filter="auto" aria-pressed="false">Automação<span class="n"></span></button>
           <button class="chip" type="button" data-filter="web" aria-pressed="false">Web<span class="n"></span></button>
           <button class="chip" type="button" data-filter="dados" aria-pressed="false">Dados<span class="n"></span></button>
           <button class="chip" type="button" data-filter="eng" aria-pressed="false">Engenharia de software<span class="n"></span></button>
@@ -69,10 +70,8 @@
       <div class="grid">
 
         <!-- 1 -->
-        <article class="card reveal featured" data-tags="ia web dados eng">
-          <div class="shot">
-            <img src="img/central-engenharia.png" alt="Tela da Central de Engenharia" loading="lazy">
-          </div>
+        <article class="card reveal featured" data-tags="ia web dados eng auto">
+          <div class="shot gal"><ul class="gal-track" tabindex="0" aria-label="Galeria de imagens: use as setas para navegar"><li><img src="img/central/01.jpg" alt="Central de Engenharia: visão geral com custos por evento" loading="lazy" width="1600" height="900"></li><li><img src="img/central/02.jpg" alt="Gráfico de custo por evento, separado em MDO, avarias e medidores" loading="lazy" width="1600" height="900"></li><li><img src="img/central/03.jpg" alt="Página de um evento: composição do custo e energia por hora" loading="lazy" width="1600" height="900"></li><li><img src="img/central/04.jpg" alt="Avarias: itens e eventos com maior valor" loading="lazy" width="1600" height="900"></li><li><img src="img/central/05.jpg" alt="Manutenção: tempo médio e quantidade de chamados por tipo" loading="lazy" width="1600" height="900"></li><li><img src="img/central/06.jpg" alt="Notas fiscais: medições, alertas de saldo e prazo" loading="lazy" width="1600" height="900"></li><li><img src="img/central/07.jpg" alt="Documentos: vencimentos de alvarás e laudos" loading="lazy" width="1600" height="900"></li></ul></div>
           <div class="card-body">
             <div class="card-top">
               <span class="badge hl">Destaque</span><span class="badge">Em uso por ~20 pessoas</span><span class="badge time">1ª versão em 2 a 4 dias</span>
@@ -95,9 +94,7 @@
 
         <!-- 2 -->
         <article class="card reveal" data-tags="ia web eng">
-          <div class="shot">
-            <img src="img/quiz-ao-vivo.png" alt="Tela do quiz ao vivo" loading="lazy">
-          </div>
+          <div class="shot gal"><ul class="gal-track" tabindex="0" aria-label="Galeria de imagens: use as setas para navegar"><li><img src="img/quiz/01.jpg" alt="Sala aberta com QR code e participantes conectados" loading="lazy" width="1600" height="900"></li><li><img src="img/quiz/02.jpg" alt="Pergunta no telão com contador de respostas" loading="lazy" width="1600" height="900"></li><li><img src="img/quiz/03.jpg" alt="Resultado da pergunta com a alternativa certa" loading="lazy" width="1600" height="900"></li><li><img src="img/quiz/04.jpg" alt="Pódio final com os três primeiros" loading="lazy" width="1600" height="900"></li><li><img src="img/quiz/05.jpg" alt="Editor de perguntas do quiz" loading="lazy" width="1600" height="900"></li><li><img src="img/quiz/06.jpg" alt="Painel do apresentador para abrir uma sala" loading="lazy" width="1600" height="900"></li><li><img src="img/quiz/07.jpg" alt="Telas do celular: entrar na sala e responder" loading="lazy" width="1600" height="900"></li></ul></div>
           <div class="card-body">
             <div class="card-top"><span class="badge time">Feito em ~2 dias</span></div>
             <h3>Quiz ao vivo multiplayer</h3>
@@ -116,14 +113,12 @@
         </article>
 
         <!-- 4 -->
-        <article class="card reveal" data-tags="dados eng">
-          <div class="shot">
-            <img src="img/credenciamento.png" alt="Sistema de credenciamento em Python" loading="lazy">
-          </div>
+        <article class="card reveal" data-tags="dados eng auto">
+          <div class="shot gal"><ul class="gal-track" tabindex="0" aria-label="Galeria de imagens: use as setas para navegar"><li><img src="img/credenciamento/01.jpg" alt="App desktop: seleção de colaboradores e log de execução" loading="lazy" width="1600" height="900"></li><li><img src="img/credenciamento/02.jpg" alt="Histórico de credenciamentos com filtros" loading="lazy" width="1600" height="900"></li><li><img src="img/credenciamento/03.jpg" alt="Demo web: portal de exemplo sendo preenchido automaticamente" loading="lazy" width="1600" height="900"></li><li><img src="img/credenciamento/04.jpg" alt="Demo web: histórico atualizado após a execução" loading="lazy" width="1600" height="900"></li></ul></div>
           <div class="card-body">
             <div class="card-top"><span class="badge">Em uso</span><span class="badge time">Feito em ~2 semanas</span></div>
             <h3>Credenciamento automático</h3>
-            <p class="summary">App desktop em Python que preenche sozinho o portal de credenciamento de eventos. Prints com dados fictícios.</p>
+            <p class="summary">App desktop em Python que preenche sozinho o portal de credenciamento de eventos. Prints com dados fictícios; a demo é uma simulação web da mesma interface.</p>
             <dl class="psr">
               <div><dt>Problema</dt><dd>Credenciar colaboradores internos e terceiros (média de 12 por evento) era preencher o mesmo formulário web, pessoa por pessoa: cerca de 30 minutos por evento, de 4 a 10 eventos por mês.</dd></div>
               <div><dt>Solução</dt><dd>Interface em Tkinter para marcar quem vai ao evento; o Selenium abre o portal, escolhe o evento e envia os cadastros em sequência, com log em tempo real.</dd></div>
@@ -131,13 +126,14 @@
             </dl>
             <ul class="stack mono"><li>Python</li><li>Selenium</li><li>Tkinter</li></ul>
             <div class="links">
+              <a href="credenciamento-demo/" class="link primary" target="_blank" rel="noopener">▶ Usar a demo ao vivo</a>
               <a href="https://github.com/limmuz/credenciamento-automatico" class="link" target="_blank" rel="noopener">{ } Código</a>
             </div>
           </div>
         </article>
 
         <!-- 5 -->
-        <article class="card reveal" data-tags="dados ia">
+        <article class="card reveal" data-tags="dados ia auto">
           <div class="shot">
             <img src="img/relatorios.png" alt="Visual em Python no Power BI" loading="lazy">
           </div>
@@ -154,6 +150,38 @@
           </div>
         </article>
 
+
+        <!-- Power BI -->
+        <article class="card reveal" data-tags="dados">
+          <div class="shot gal"><ul class="gal-track" tabindex="0" aria-label="Galeria de imagens: use as setas para navegar"><li><img src="img/powerbi/01.jpg" alt="Power BI: custos por evento com MDO, avarias e medidores" loading="lazy" width="1600" height="900"></li><li><img src="img/powerbi/02.jpg" alt="Power BI: manutenção com tempo médio e SLA dos chamados" loading="lazy" width="1600" height="900"></li><li><img src="img/powerbi/03.jpg" alt="Power BI: medidores de consumo e ranking de eventos" loading="lazy" width="1600" height="900"></li></ul></div>
+          <div class="card-body">
+            <div class="card-top"><span class="badge">Dados fictícios</span></div>
+            <h3>Painel Power BI de custos de eventos</h3>
+            <p class="summary">Dashboard com o mesmo visual da Central, montado sobre uma base Excel com 10 tabelas relacionadas.</p>
+            <dl class="psr">
+              <div><dt>Modelo</dt><dd>Esquema estrela: 3 tabelas fato (itens, consumos e chamados) ligadas por ID a eventos, categorias, gêneros, itens, medidores e calendário.</dd></div>
+              <div><dt>DAX</dt><dd>29 medidas: custo por tipo com CALCULATE, SUMX com RELATED, acumulado no ano (TOTALYTD), comparação com o mês anterior (DATEADD), ranking (RANKX) e % no SLA.</dd></div>
+              <div><dt>Páginas</dt><dd>Custos por evento, manutenção com SLA de 60 minutos, e medidores com ranking de eventos.</dd></div>
+            </dl>
+            <ul class="stack mono"><li>Power BI</li><li>DAX</li><li>Power Query</li><li>Modelagem estrela</li><li>Excel</li></ul>
+          </div>
+        </article>
+
+        <!-- Make + monday -->
+        <article class="card reveal" data-tags="auto">
+          <div class="shot gal"><ul class="gal-track" tabindex="0" aria-label="Galeria de imagens: use as setas para navegar"><li><img src="img/make-monday.jpg" alt="Fluxo ilustrativo: monday.com, cenário semanal no Make e e-mail com requisições pendentes (exemplo com dados fictícios)" loading="lazy" width="1600" height="900"></li></ul></div>
+          <div class="card-body">
+            <div class="card-top"><span class="badge">Em uso</span><span class="badge">Sem código</span></div>
+            <h3>Alertas semanais de requisições pendentes</h3>
+            <p class="summary">Automação no Make integrada ao monday.com que avisa por e-mail o que ainda está em aberto.</p>
+            <dl class="psr">
+              <div><dt>Problema</dt><dd>Requisições pendentes ficavam paradas no board sem ninguém perceber, e acompanhar dependia de abrir o monday.com.</dd></div>
+              <div><dt>Solução</dt><dd>Um cenário no Make roda toda semana, lê o board de requisições, filtra as pendentes e envia um resumo por e-mail.</dd></div>
+              <div><dt>Resultado</dt><dd>O acompanhamento chega sozinho na caixa de entrada toda semana, sem conferência manual.</dd></div>
+            </dl>
+            <ul class="stack mono"><li>Make</li><li>monday.com</li><li>E-mail</li><li>Agendamento</li></ul>
+          </div>
+        </article>
         <!-- 6 -->
         <article class="card reveal" data-tags="ia web">
           <div class="shot">
@@ -173,9 +201,7 @@
 
         <!-- Lybre -->
         <article class="card reveal" data-tags="web eng">
-          <div class="shot">
-            <img src="img/lybre.png" alt="Página inicial do Lybre com últimas leituras e lista de leitura" loading="lazy">
-          </div>
+          <div class="shot gal"><ul class="gal-track" tabindex="0" aria-label="Galeria de imagens: use as setas para navegar"><li><img src="img/lybre/01.jpg" alt="Lybre: página inicial com últimas leituras" loading="lazy" width="1600" height="900"></li><li><img src="img/lybre/02.jpg" alt="Biblioteca com avaliações da comunidade" loading="lazy" width="1600" height="900"></li><li><img src="img/lybre/03.jpg" alt="Detalhes do livro com sinopse e status" loading="lazy" width="1600" height="900"></li><li><img src="img/lybre/04.jpg" alt="Avaliações e outros leitores do livro" loading="lazy" width="1600" height="900"></li><li><img src="img/lybre/05.jpg" alt="Perfil com estatísticas e meta de leitura" loading="lazy" width="1600" height="900"></li><li><img src="img/lybre/06.jpg" alt="Perfil público de outro leitor" loading="lazy" width="1600" height="900"></li></ul></div>
           <div class="card-body">
             <div class="card-top"><span class="badge">Projeto em grupo</span><span class="badge time">Feito em ~2 meses</span></div>
             <h3>Lybre · biblioteca pessoal com rede de leitores</h3>
@@ -187,6 +213,7 @@
             </dl>
             <ul class="stack mono"><li>Java 17</li><li>Spring Boot</li><li>React</li><li>MongoDB</li><li>JUnit 5</li><li>Testcontainers</li><li>SonarCloud</li></ul>
             <div class="links">
+              <a href="lybre-demo/" class="link primary" target="_blank" rel="noopener">▶ Usar a demo ao vivo</a>
               <a href="https://github.com/limmuz/biblioteca" class="link" target="_blank" rel="noopener">{ } Código</a>
             </div>
           </div>
@@ -403,7 +430,7 @@ App desktop em Python que faça esse preenchimento sozinho.
         </div>
         <div class="skill-group">
           <h3>Dados e automação</h3>
-          <ul><li>Power BI</li><li>Excel avançado</li><li>Macros/VBA</li><li>Dashboards e KPIs</li></ul>
+          <ul><li>Power BI</li><li>Excel avançado</li><li>Macros/VBA</li><li>Make</li><li>monday.com</li><li>Dashboards e KPIs</li></ul>
         </div>
         <div class="skill-group">
           <h3>Produto e negócio</h3>
@@ -509,6 +536,54 @@ document.querySelectorAll('.copy').forEach((btn) => btn.addEventListener('click'
   if (ok) { btn.textContent = 'Copiado ✓'; btn.classList.add('ok'); setTimeout(() => { btn.textContent = 'Copiar prompt'; btn.classList.remove('ok'); }, 1800); }
   showToast(ok ? 'Prompt copiado' : 'Não foi possível copiar: selecione o texto');
 }));
+
+
+// Galerias: setas, bolinhas, teclado, arrastar no celular e tela cheia
+const lb = document.createElement('div');
+lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', 'Imagem ampliada');
+lb.innerHTML = '<button class="gal-btn lb-close" type="button" aria-label="Fechar">✕</button><button class="gal-btn gal-prev" type="button" aria-label="Imagem anterior">‹</button><img alt=""><p></p><button class="gal-btn gal-next" type="button" aria-label="Próxima imagem">›</button>';
+document.body.append(lb);
+let lbImgs = [], lbI = 0, lbVolta = null;
+const lbShow = (i) => { lbI = (i + lbImgs.length) % lbImgs.length; const im = lbImgs[lbI]; lb.querySelector('img').src = im.src; lb.querySelector('img').alt = im.alt; lb.querySelector('p').textContent = `${lbI + 1}/${lbImgs.length} · ${im.alt}`; };
+const lbClose = () => { lb.classList.remove('open'); document.body.style.overflow = ''; if (lbVolta) lbVolta.focus(); };
+lb.querySelector('.lb-close').onclick = lbClose;
+lb.querySelector('.gal-prev').onclick = () => lbShow(lbI - 1);
+lb.querySelector('.gal-next').onclick = () => lbShow(lbI + 1);
+lb.addEventListener('click', (e) => { if (e.target === lb) lbClose(); });
+document.addEventListener('keydown', (e) => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') lbClose();
+  if (e.key === 'ArrowRight') lbShow(lbI + 1);
+  if (e.key === 'ArrowLeft') lbShow(lbI - 1);
+});
+
+document.querySelectorAll('.gal').forEach((g) => {
+  const track = g.querySelector('.gal-track');
+  const imgs = [...track.querySelectorAll('img')];
+  imgs.forEach((im, i) => im.addEventListener('click', () => { lbImgs = imgs; lbVolta = track; lbShow(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; lb.querySelector('.gal-next').focus(); }));
+  if (imgs.length < 2) return;
+  const bar = document.createElement('div'); bar.className = 'gal-bar';
+  bar.innerHTML = '<span class="gal-cap" aria-live="polite"></span><div class="gal-dots"></div>';
+  const count = document.createElement('span'); count.className = 'gal-count';
+  const prev = document.createElement('button'); prev.className = 'gal-btn gal-prev'; prev.type = 'button'; prev.textContent = '‹'; prev.setAttribute('aria-label', 'Imagem anterior');
+  const next = document.createElement('button'); next.className = 'gal-btn gal-next'; next.type = 'button'; next.textContent = '›'; next.setAttribute('aria-label', 'Próxima imagem');
+  g.append(prev, next, bar, count);
+  const dots = imgs.map((im, i) => { const d = document.createElement('button'); d.type = 'button'; d.setAttribute('aria-label', `Ver imagem ${i + 1} de ${imgs.length}`); d.onclick = () => ir(i); bar.querySelector('.gal-dots').append(d); return d; });
+  let atual = 0;
+  const ir = (i) => { i = Math.max(0, Math.min(imgs.length - 1, i)); track.scrollTo({ left: i * track.clientWidth }); marcar(i); };
+  const marcar = (i) => {
+    atual = i;
+    dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i)));
+    prev.disabled = i === 0; next.disabled = i === imgs.length - 1;
+    count.textContent = `${i + 1}/${imgs.length}`;
+    bar.querySelector('.gal-cap').textContent = imgs[i].alt;
+    if (imgs[i + 1]) imgs[i + 1].loading = 'eager';
+  };
+  prev.onclick = () => ir(atual - 1); next.onclick = () => ir(atual + 1);
+  track.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') { e.preventDefault(); ir(atual + 1); } if (e.key === 'ArrowLeft') { e.preventDefault(); ir(atual - 1); } });
+  let t; track.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(() => { const i = Math.round(track.scrollLeft / track.clientWidth); if (i !== atual) marcar(i); }, 80); });
+  marcar(0);
+});
 
 // Entrada suave ao rolar
 const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => {
