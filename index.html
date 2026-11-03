@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miguel Lima | Portfólio · IA Generativa e Automação</title>
+  <meta name="description" content="Portfólio de Miguel Luiz Lima Nascimento: soluções reais construídas com IA generativa, automação e análise de dados.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="nav">
+    <a href="#topo" class="logo">miguel<span>.lima</span></a>
+    <nav>
+      <a href="#projetos">Projetos</a>
+      <a href="#processo">Como uso IA</a>
+      <a href="#habilidades">Habilidades</a>
+      <a href="#contato" class="nav-cta">Contato</a>
+    </nav>
+  </header>
+
+  <main id="topo">
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="eyebrow mono">// IA generativa · automação · dados</p>
+      <h1>Eu uso IA para transformar <mark>problemas reais</mark> em soluções funcionando.</h1>
+      <p class="lead">
+        Sou o Miguel, estudante de Análise e Desenvolvimento de Sistemas (Senac) e Assistente Administrativo no
+        Nubank Parque. Lá, encontro processos manuais e construo do zero sistemas, automações e dashboards,
+        usando agentes de IA, prompt engineering e vibe coding.
+      </p>
+      <div class="hero-actions">
+        <a href="#projetos" class="btn btn-primary">Ver projetos</a>
+        <a href="curriculo.pdf" class="btn btn-ghost" target="_blank" rel="noopener">Baixar currículo</a>
+      </div>
+      <ul class="stats">
+        <li><strong>7</strong><span>projetos construídos</span></li>
+        <li><strong>100+</strong><span>pessoas ao mesmo tempo no quiz ao vivo</span></li>
+        <li><strong>~20</strong><span>usuários na Central de Engenharia</span></li>
+        <li><strong>3 anos</strong><span>em empresas de grande porte</span></li>
+      </ul>
+    </section>
+
+    <!-- PROJETOS -->
+    <section id="projetos" class="section">
+      <div class="section-head">
+        <p class="eyebrow mono">01 / projetos</p>
+        <h2>Do problema ao resultado</h2>
+        <div class="filters" role="tablist">
+          <button class="chip active" data-filter="all">Todos</button>
+          <button class="chip" data-filter="ia">Feito com IA</button>
+          <button class="chip" data-filter="web">Web</button>
+          <button class="chip" data-filter="dados">Dados</button>
+        </div>
+      </div>
+
+      <div class="grid">
+
+        <!-- 1 -->
+        <article class="card featured" data-tags="ia web dados">
+          <div class="shot">
+            <img src="img/central-engenharia.png" alt="Tela da Central de Engenharia" loading="lazy">
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <span class="tag">Destaque</span>
+              <span class="status">Em desenvolvimento</span>
+            </div>
+            <h3>Central de Engenharia</h3>
+            <p class="summary">Sistema web interno que substitui planilhas, macros e controles manuais da área de Engenharia de uma arena de eventos.</p>
+            <dl class="psr">
+              <div><dt>Problema</dt><dd>Relatórios de eventos, medição de notas fiscais e vencimento de documentos ficavam espalhados em planilhas e macros VBA que só eu sabia operar.</dd></div>
+              <div><dt>Solução</dt><dd>Um web app com 3 módulos: relatório de eventos (entrada de dados, upload de planilhas e dashboard), medições de NF com envio de e-mails a fornecedores e controle de vencimento de documentos.</dd></div>
+              <div><dt>Como usei IA</dt><dd>Desenvolvi com o Claude Code como agente: escrevi especificações em linguagem natural, revisei o código gerado, testei com dados reais e iterei por módulo.</dd></div>
+              <div><dt>Resultado</dt><dd>Acesso compartilhado por cerca de 20 pessoas de diferentes áreas, sem depender de uma única pessoa.</dd></div>
+            </dl>
+            <ul class="stack mono"><li>Python</li><li>HTML/CSS/JS</li><li>Claude Code</li><li>Excel</li></ul>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article class="card" data-tags="ia web">
+          <div class="shot">
+            <img src="img/quiz-ao-vivo.png" alt="Tela do quiz ao vivo" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3>Quiz ao vivo multiplayer</h3>
+            <p class="summary">Plataforma estilo Kahoot para apresentações e aulas, com acesso por QR code.</p>
+            <dl class="psr">
+              <div><dt>Problema</dt><dd>Precisávamos de um quiz interativo para uma apresentação da faculdade e para oficinas com alunos, sem depender de ferramentas pagas.</dd></div>
+              <div><dt>Solução</dt><dd>Site com sala ao vivo, entrada por QR code, 4 alternativas por pergunta e ranking.</dd></div>
+              <div><dt>Resultado</dt><dd>Dimensionado para 100+ participantes simultâneos; usado nas oficinas de HTML/CSS para alunos de 12 a 16 anos na IU Education.</dd></div>
+            </dl>
+            <ul class="stack mono"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>vibe coding</li></ul>
+            <div class="links">
+              <a href="https://limmuz.github.io/quiz-ao-vivo/" class="link" target="_blank" rel="noopener">↗ Testar ao vivo</a>
+              <a href="https://github.com/limmuz/quiz-ao-vivo" class="link" target="_blank" rel="noopener">{ } Código</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3 -->
+        <article class="card" data-tags="ia">
+          <div class="shot">
+            <img src="img/monday-vibe.png" alt="App de gestão de eventos gerado no monday.com Vibe" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3>App de eventos com monday.com Vibe</h3>
+            <p class="summary">Prompt engineering para gerar, por IA, um app de gestão de shows e jogos.</p>
+            <dl class="psr">
+              <div><dt>Problema</dt><dd>O time precisava enxergar o custo de cada evento sem montar relatórios na mão.</dd></div>
+              <div><dt>Solução</dt><dd>Prompts estruturados com regras de negócio, métricas e identidade visual: custo por evento (mão de obra, avarias, utilidades), médias por gênero e comparação show x jogo.</dd></div>
+              <div><dt>Aprendizado</dt><dd>Quanto mais específico o prompt (dados de entrada, regras, paleta), menos retrabalho na saída.</dd></div>
+            </dl>
+            <ul class="stack mono"><li>Prompt engineering</li><li>no-code</li><li>IA generativa</li></ul>
+          </div>
+        </article>
+
+        <!-- 4 -->
+        <article class="card" data-tags="dados">
+          <div class="shot">
+            <img src="img/credenciamento.png" alt="Sistema de credenciamento em Python" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3>Credenciamento automático</h3>
+            <p class="summary">App desktop em Python que preenche sozinho o portal de credenciamento de eventos. Prints com dados fictícios.</p>
+            <dl class="psr">
+              <div><dt>Problema</dt><dd>Credenciar colaboradores internos e terceiros (média de 12 por evento) era preencher o mesmo formulário web, pessoa por pessoa.</dd></div>
+              <div><dt>Solução</dt><dd>Interface em Tkinter para marcar quem vai ao evento; o Selenium abre o portal, escolhe o evento e envia os cadastros em sequência, com log em tempo real.</dd></div>
+              <div><dt>Extras</dt><dd>Histórico com filtros por data e evento, exportação em CSV e cadastro de colaboradores dentro do próprio app.</dd></div>
+            </dl>
+            <ul class="stack mono"><li>Python</li><li>Selenium</li><li>Tkinter</li></ul>
+            <div class="links">
+              <a href="https://github.com/limmuz/credenciamento-automatico" class="link" target="_blank" rel="noopener">{ } Código</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5 -->
+        <article class="card" data-tags="dados ia">
+          <div class="shot">
+            <img src="img/relatorios.png" alt="Visual em Python no Power BI" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3>Relatórios automatizados</h3>
+            <p class="summary">Visuais em Python no Power BI e um template de PowerPoint gerado por código. Prints com dados fictícios.</p>
+            <dl class="psr">
+              <div><dt>Problema</dt><dd>As apresentações pós-evento eram montadas à mão e os visuais padrão do Power BI não seguiam a marca.</dd></div>
+              <div><dt>Solução</dt><dd>Gráficos em matplotlib dentro do Power BI e um template de 10 slides (KPIs, rankings, comparativos) gerado com Node.js.</dd></div>
+              <div><dt>Resultado</dt><dd>Base usada para acompanhar o consumo de utilidades e apoiar o planejamento do orçamento do ano seguinte.</dd></div>
+            </dl>
+            <ul class="stack mono"><li>Power BI</li><li>Python</li><li>Node.js</li><li>pptxgenjs</li></ul>
+          </div>
+        </article>
+
+        <!-- 6 -->
+        <article class="card" data-tags="ia web">
+          <div class="shot">
+            <img src="img/app-financas.png" alt="App de finanças pessoais" loading="lazy">
+          </div>
+          <div class="card-body">
+            <div class="card-top"><span class="status">Em desenvolvimento</span></div>
+            <h3>App de finanças com Open Finance</h3>
+            <p class="summary">App mobile pessoal que lê meus dados bancários via API e responde perguntas em linguagem natural.</p>
+            <dl class="psr">
+              <div><dt>Problema</dt><dd>Queria saber para onde vai meu dinheiro sem categorizar gastos manualmente.</dd></div>
+              <div><dt>Solução</dt><dd>Integração com a API de Open Finance da Pluggy e um chat com IA: "quanto gastei com Uber por mês?".</dd></div>
+            </dl>
+            <ul class="stack mono"><li>API Pluggy</li><li>Android</li><li>LLM</li><li>Claude Code</li></ul>
+          </div>
+        </article>
+
+        <!-- 7 -->
+        <article class="card" data-tags="web">
+          <div class="shot">
+            <img src="img/conecta.png" alt="Protótipo do CRM CONECTA no Figma" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3>CONECTA · CRM para microempreendedor</h3>
+            <p class="summary">Projeto Integrador da faculdade: protótipo navegável de alta fidelidade para uma confeitaria.</p>
+            <dl class="psr">
+              <div><dt>Escopo</dt><dd>Clientes, pedidos, estoque, dashboard financeiro, pagamento via PIX/cartão e recibo com QR code.</dd></div>
+              <div><dt>Equipe</dt><dd>Trabalho em grupo, com as entregas organizadas em kanban no GitHub Projects.</dd></div>
+            </dl>
+            <ul class="stack mono"><li>Figma</li><li>UX</li><li>GitHub Projects</li></ul>
+            <div class="links">
+              <a href="https://www.figma.com/design/2uJ8Og29x9NuG7dqbHZ4dk/CONECTA" class="link" target="_blank" rel="noopener">↗ Ver protótipo</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- PROCESSO -->
+    <section id="processo" class="section">
+      <div class="section-head">
+        <p class="eyebrow mono">02 / como uso IA</p>
+        <h2>Meu processo, do zero ao resultado</h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="mono">01</span>
+          <h3>Encontro a dor</h3>
+          <p>Começo por um processo manual, repetitivo ou que depende de uma pessoa só, e meço quanto tempo ele custa.</p>
+        </li>
+        <li>
+          <span class="mono">02</span>
+          <h3>Especifico em linguagem natural</h3>
+          <p>Escrevo um prompt com contexto, regras de negócio, estrutura real dos dados e critérios de pronto.</p>
+        </li>
+        <li>
+          <span class="mono">03</span>
+          <h3>Construo com um agente</h3>
+          <p>Uso o Claude Code para gerar e editar o código em etapas pequenas, revisando cada mudança.</p>
+        </li>
+        <li>
+          <span class="mono">04</span>
+          <h3>Testo com dados reais</h3>
+          <p>Valido com as planilhas e os casos do dia a dia, e não com dados de exemplo, até o resultado bater.</p>
+        </li>
+        <li>
+          <span class="mono">05</span>
+          <h3>Entrego e meço</h3>
+          <p>Coloco nas mãos de quem usa, coleto feedback e acompanho o ganho de tempo e a redução de erros.</p>
+        </li>
+      </ol>
+
+      <div class="prompt-box">
+        <div class="prompt-head mono"><span class="dot"></span><span class="dot"></span><span class="dot"></span> exemplo de prompt</div>
+        <pre class="mono"><code>Contexto: sou da área de Engenharia de uma arena de eventos.
+Tarefa: crie um módulo web para medição de notas fiscais.
+Dados: a planilha tem as colunas Contrato, Fornecedor, Nº NF, Valor, Data.
+Regras:
+- ao marcar uma NF como "medida", gerar o e-mail padrão para o fornecedor;
+- registrar quais notas já foram medidas, por contrato;
+- cada usuário vê apenas a aba do seu time.
+Pronto quando: consigo subir a planilha, medir 3 notas e ver os e-mails gerados.
+Trabalhe em etapas e me mostre cada arquivo alterado.</code></pre>
+        <button class="copy mono" type="button">copiar</button>
+      </div>
+    </section>
+
+    <!-- HABILIDADES -->
+    <section id="habilidades" class="section">
+      <div class="section-head">
+        <p class="eyebrow mono">03 / habilidades</p>
+        <h2>Ferramentas que uso</h2>
+      </div>
+      <div class="skills">
+        <div class="skill-group">
+          <h3>IA generativa</h3>
+          <ul><li>Prompt engineering</li><li>Vibe coding</li><li>Claude Code (agente)</li><li>Claude</li><li>monday.com Vibe</li></ul>
+        </div>
+        <div class="skill-group">
+          <h3>Desenvolvimento</h3>
+          <ul><li>Python</li><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Node.js</li><li>APIs REST</li><li>VS Code</li></ul>
+        </div>
+        <div class="skill-group">
+          <h3>Dados e automação</h3>
+          <ul><li>Power BI</li><li>Excel avançado</li><li>Macros/VBA</li><li>Monday.com</li><li>Dashboards e KPIs</li></ul>
+        </div>
+        <div class="skill-group">
+          <h3>Produto e negócio</h3>
+          <ul><li>Figma</li><li>SAP (MDG, Concur)</li><li>ServiceNow</li><li>Análise de custos</li><li>Budget</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contato" class="section contact">
+      <p class="eyebrow mono">04 / contato</p>
+      <h2>Vamos construir algo?</h2>
+      <p class="lead">Estou aberto a oportunidades em IA generativa, automação e dados.</p>
+      <ul class="contact-list">
+        <li><span class="mono">e-mail</span><a href="mailto:miguellima.nascimento.005@gmail.com">miguellima.nascimento.005@gmail.com</a></li>
+        <li><span class="mono">linkedin</span><a href="https://www.linkedin.com/in/miguel-luiz-lima-nascimento-9a5010258" target="_blank" rel="noopener">linkedin.com/in/miguel-luiz-lima-nascimento</a></li>
+        <li><span class="mono">github</span><a href="https://github.com/limmuz" target="_blank" rel="noopener">github.com/limmuz</a></li>
+        <li><span class="mono">local</span><span>São Paulo, SP</span></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="footer mono">
+    <span>© 2026 Miguel Luiz Lima Nascimento</span>
+    <span>feito com HTML, CSS, JS e IA</span>
+  </footer>
+
+  <div class="toast mono" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
