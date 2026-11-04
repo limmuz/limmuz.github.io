@@ -46,7 +46,7 @@
       <ul class="stats reveal">
         <li><strong>até 14h</strong><span>economizadas por mês com automações</span></li>
         <li><strong>100+</strong><span>pessoas ao mesmo tempo no quiz ao vivo</span></li>
-        <li><strong>~20</strong><span>usuários na Central de Engenharia</span></li>
+        <li><strong>segundos</strong><span>para consultar custos que exigiam abrir várias planilhas</span></li>
         <li><strong>-85%</strong><span>de tempo no credenciamento de equipes</span></li>
       </ul>
     </section>
@@ -74,15 +74,15 @@
           <div class="shot gal"><ul class="gal-track" tabindex="0" aria-label="Galeria de imagens: use as setas para navegar"><li><img src="img/central/01.jpg" alt="Central de Engenharia: visão geral com custos por evento" loading="lazy" width="1600" height="900"></li><li><img src="img/central/02.jpg" alt="Gráfico de custo por evento, separado em MDO, avarias e medidores" loading="lazy" width="1600" height="900"></li><li><img src="img/central/03.jpg" alt="Página de um evento: composição do custo e energia por hora" loading="lazy" width="1600" height="900"></li><li><img src="img/central/04.jpg" alt="Avarias: itens e eventos com maior valor" loading="lazy" width="1600" height="900"></li><li><img src="img/central/05.jpg" alt="Manutenção: tempo médio e quantidade de chamados por tipo" loading="lazy" width="1600" height="900"></li><li><img src="img/central/06.jpg" alt="Notas fiscais: medições, alertas de saldo e prazo" loading="lazy" width="1600" height="900"></li><li><img src="img/central/07.jpg" alt="Documentos: vencimentos de alvarás e laudos" loading="lazy" width="1600" height="900"></li></ul></div>
           <div class="card-body">
             <div class="card-top">
-              <span class="badge hl">Destaque</span><span class="badge">Em uso por ~20 pessoas</span><span class="badge time">1ª versão em 2 a 4 dias</span>
+              <span class="badge hl">Destaque</span><span class="badge">Em uso por ~10 pessoas</span><span class="badge time">1ª versão em 2 a 4 dias</span>
             </div>
             <h3>Central de Engenharia</h3>
-            <p class="summary">Sistema web interno que substitui planilhas, macros e controles manuais da área de Engenharia de uma arena de eventos. Prints com dados fictícios.</p>
+            <p class="summary">Sistema web interno que reúne os dados de custos, notas fiscais e documentos da Engenharia de uma arena de eventos, para consulta em segundos por qualquer pessoa da equipe. Prints com dados fictícios.</p>
             <dl class="psr">
-              <div><dt>Problema</dt><dd>Custos de eventos, medições de notas fiscais, budget e vencimento de documentos ficavam espalhados em planilhas e macros VBA que só eu sabia operar.</dd></div>
-              <div><dt>Solução</dt><dd>Um web app com 5 módulos: relatório de eventos (painéis de custos, avarias, manutenção e comparação entre dias), notas fiscais e contratos, budget, consumo de utilidades e vencimento de documentos. Inclui importação de planilhas, exportação em Excel e PDF, contas com perfis e histórico de alterações.</dd></div>
+              <div><dt>Problema</dt><dd>Para consultar o custo de um evento era preciso abrir várias planilhas pesadas na rede e repassar os dados ao Power BI, que travava o notebook, quebrava quando um arquivo mudava de caminho e nem todos da equipe sabiam usar. As medições de notas fiscais ficavam numa planilha com macros, pouco intuitiva.</dd></div>
+              <div><dt>Solução</dt><dd>Eu subo a planilha de custos do evento e o site extrai os dados: consulta e comparação entre eventos em segundos, gráficos prontos e download da planilha sem procurar o caminho na rede. A planilha original continua sendo a base enviada a produtores, financeiro e controladoria. Depois da 1ª versão vieram, aos poucos, avarias, notas fiscais e contratos (com saldo), documentos, consumo mensal e budget.</dd></div>
               <div><dt>Como usei IA</dt><dd>Desenvolvido com o Claude Code como agente: escrevi especificações em linguagem natural, revisei o código gerado, testei com dados reais e iterei módulo a módulo.</dd></div>
-              <div><dt>Resultado</dt><dd>O relatório pós-evento caiu de 1h30 para 30 minutos (de 4h a 10h economizadas por mês), a montagem da planilha passou a ser feita por um colega, e as medições de NF ficaram num só lugar, com consulta por período e controle de prazo. Usado por cerca de 20 pessoas de diferentes áreas.</dd></div>
+              <div><dt>Resultado</dt><dd>O relatório pós-evento caiu de 1h30 para 30 minutos (de 4h a 10h economizadas por mês). Cerca de 10 pessoas de Engenharia, Operações e Sustentabilidade consultam sozinhas, por exemplo o consumo de gás de um período. Nas notas fiscais, vejo saldo de contrato, medições por mês e fornecedores que mais enviam fora do prazo. As páginas principais estão estáveis em uso há cerca de 1 mês.</dd></div>
             </dl>
             <ul class="stack mono"><li>Python</li><li>Flask</li><li>SQLite</li><li>JavaScript</li><li>Chart.js</li><li>Claude Code</li></ul>
             <div class="links">
@@ -100,9 +100,9 @@
             <h3>Quiz ao vivo multiplayer</h3>
             <p class="summary">Plataforma estilo Kahoot para apresentações e aulas, com acesso por QR code.</p>
             <dl class="psr">
-              <div><dt>Problema</dt><dd>Precisávamos de um quiz interativo para uma apresentação da faculdade e para oficinas com alunos, sem depender de ferramentas pagas.</dd></div>
+              <div><dt>Problema</dt><dd>Precisávamos de um quiz interativo para uma apresentação da faculdade e para as oficinas do projeto de extensão, sem depender de ferramentas pagas.</dd></div>
               <div><dt>Solução</dt><dd>Site com sala ao vivo, entrada por QR code, 4 alternativas por pergunta e ranking.</dd></div>
-              <div><dt>Resultado</dt><dd>Dimensionado para 100+ participantes simultâneos; usado nas oficinas de HTML/CSS para alunos de 12 a 16 anos na IU Education.</dd></div>
+              <div><dt>Resultado</dt><dd>Dimensionado para 100+ participantes simultâneos; será usado nas oficinas de HTML/CSS para alunos de 12 a 16 anos na IU Education (novembro de 2026).</dd></div>
             </dl>
             <ul class="stack mono"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>vibe coding</li></ul>
             <div class="links">
@@ -274,7 +274,8 @@
 <pre><code><span class="k"># CONTEXTO</span>
 Trabalho na Engenharia de uma arena de eventos (shows, jogos e projetos especiais).
 Os custos de cada evento (mão de obra, avarias, insumos e medidores de consumo)
-ficam numa planilha Excel que alimenta um Power BI. Só eu sei operar.
+ficam em planilhas pesadas na rede que alimentam um Power BI. Nem todos da equipe
+sabem usar o Power BI, e consultar um dado simples exige abrir várias planilhas.
 
 <span class="k"># OBJETIVO</span>
 Um web app interno que seja a fonte única desses dados e reproduza os painéis
@@ -299,7 +300,7 @@ por vez. Antes de cada módulo, liste as suposições que está fazendo.
 <span class="k"># CRITÉRIOS DE PRONTO</span>
 - Os totais do app batem com os do Power BI para os mesmos eventos.
 - Um colega sem treinamento cadastra um evento em menos de 5 minutos.</code></pre>
-          <p class="prompt-res"><b>Resultado →</b> A Central de Engenharia: 5 módulos, ~20 usuários, relatório pós-evento de 1h30 para 30 minutos.</p>
+          <p class="prompt-res"><b>Resultado →</b> A Central de Engenharia: consulta em segundos, ~10 pessoas usando, relatório pós-evento de 1h30 para 30 minutos.</p>
         </div>
 
         <div class="prompt-box" role="tabpanel" id="p2" aria-labelledby="t-p2" hidden>
