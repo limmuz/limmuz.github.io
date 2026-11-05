@@ -12,7 +12,10 @@
     if (!/^\/?api\//.test(rel)) return original(input, opts);
     const metodo = ((opts && opts.method) || "GET").toUpperCase();
     if (metodo !== "GET") return json({ erro: "Demonstração somente leitura: alterações estão desativadas." }, 403);
-    for (const k of [chave(rel), chave(rel.split("?")[0])]) {
+    if (/\/email\?.*modo=dados/.test(rel)) return json({ assunto: "NF 1001 - Manutenção Exemplo Ltda | Medição 01/2026", texto: "Bom dia,\n\nSegue Nota Fiscal 1001.\n", para: "fiscal@empresa-demo.com.br", cc: "", cco: "", com_anexo: false, anexo_url: "" });
+    // mês e ano atuais mudam com o tempo: a demo tem um único mês e ano gravados
+    const fixa = (t) => t.replace(/api\/sup\/mes\/\d{4}-\d{2}/, "api/sup/mes/2026-10").replace(/api\/budget\/ano\/\d+/, "api/budget/ano/2026").replace(/ano=\d+/, "ano=2026");
+    for (const k of [chave(fixa(rel)), chave(fixa(rel).split("?")[0])]) {
       const r = await original("demo-api/" + k + ".json");
       if (r.ok) return json(await r.json());
     }
@@ -40,6 +43,10 @@
   // links diretos para a API (ex.: "Exportar Excel", "Baixar modelo") também baixam a planilha de exemplo
   document.addEventListener("click", (e) => {
     const a = e.target.closest && e.target.closest('a[href^="api/"]');
-    if (a) { e.preventDefault(); baixar(a.getAttribute("href")); }
+    if (a) {
+      e.preventDefault();
+      if (/\/email/.test(a.getAttribute("href"))) { App.toast("Na demonstração o e-mail não é gerado."); return; }
+      baixar(a.getAttribute("href"));
+    }
   }, true);
 })();
