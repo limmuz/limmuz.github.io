@@ -109,92 +109,236 @@ const EXEMPLOS = [{"pergunta": "Quais contratos estão com o saldo mais apertado
 
 // ---------------------------------------------------------------- Motor de consulta (genérico)
 let BASE = BASE_DEMO, EM_PLANILHA = false;
-const num = (v) => { if (typeof v === "number") return v; const t = String(v).replace(/R\$|\s/g, "").replace(/\.(?=\d{3}(\D|$))/g, "").replace(",", "."); if (!/^-?\d+(\.\d+)?$/.test(t)) return null; return parseFloat(t); };
-const pegarAba = (aba) => { const k = Object.keys(BASE.abas).find((x) => x === aba) || Object.keys(BASE.abas).find((x) => x.toLowerCase() === String(aba).toLowerCase()); if (!k) throw new Error("Tabela não encontrada. Use listar_tabelas."); return BASE.abas[k]; };
-const pegarCol = (a, c) => { const k = a.colunas.find((x) => x === c) || a.colunas.find((x) => x.toLowerCase() === String(c).toLowerCase()); if (!k) throw new Error("Coluna '" + c + "' não existe. Colunas: " + a.colunas.join(", ")); return k; };
+const norm = (v) => String(v ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+const chave = (v) => norm(v).replace(/[^a-z0-9%]/g, "");
+const num = (v) => { if (typeof v === "number") return v; if (v === "" || v === null || v === undefined) return null; const t = String(v).replace(/R\$|\s|%/g, "").replace(/\.(?=\d{3}(\D|$))/g, "").replace(",", "."); if (!/^-?\d+(\.\d+)?$/.test(t)) return null; return parseFloat(t); };
+const pegarAba = (aba) => { const ks = Object.keys(BASE.abas); const k = ks.find((x) => x === aba) || ks.find((x) => chave(x) === chave(aba)) || ks.find((x) => chave(x).includes(chave(aba))); if (!k) throw new Error("Tabela '" + aba + "' não encontrada. Tabelas: " + ks.join(", ")); return BASE.abas[k]; };
+const pegarCol = (a, c) => { const k = a.colunas.find((x) => x === c) || a.colunas.find((x) => chave(x) === chave(c)) || a.colunas.find((x) => chave(x).includes(chave(c))) || a.colunas.find((x) => chave(c).includes(chave(x)) && chave(x).length > 3);
+  if (!k) throw new Error("Coluna '" + c + "' não existe. Colunas: " + a.colunas.join(", ")); return k; };
+const ehData = (v) => /^\d{4}-\d{2}-\d{2}$/.test(String(v));
 function filtrar(a, filtros) {
   let ls = a.linhas;
   for (const f of filtros || []) {
-    const c = pegarCol(a, f.coluna), op = f.op || "=", v = f.valor;
+    const c = pegarCol(a, f.coluna), op = String(f.op || "=").toLowerCase(), v = f.valor;
     ls = ls.filter((l) => {
       const x = l[c];
-      if (op === "contem") return String(x).toLowerCase().includes(String(v).toLowerCase());
-      if (op === "=" || op === "!=") { const eq = String(x).toLowerCase() === String(v).toLowerCase() || (num(x) !== null && num(x) === num(v)); return op === "=" ? eq : !eq; }
-      const data = /^\d{4}-\d{2}/.test(String(v));
+      if (op === "vazio") return x === "" || x === null || x === undefined;
+      if (op === "nao_vazio") return !(x === "" || x === null || x === undefined);
+      if (op === "contem") return norm(x).includes(norm(v));
+      if (op === "nao_contem") return !norm(x).includes(norm(v));
+      if (op === "=" || op === "!=") { const eq = norm(x) === norm(v) || (num(x) !== null && num(v) !== null && num(x) === num(v)); return op === "=" ? eq : !eq; }
+      const data = ehData(v) || /^\d{4}-\d{2}$/.test(String(v));
       const nx = num(x), nv = num(v);
       const [A, B] = !data && nx !== null && nv !== null ? [nx, nv] : [String(x), String(v)];
+      if (data && !String(x)) return false;
       return op === ">" ? A > B : op === "<" ? A < B : op === ">=" ? A >= B : op === "<=" ? A <= B : true;
     });
   }
   return ls;
 }
+// cabe no limite de resposta de uma ferramenta (32 KB)
+function caber(obj, chaveLista) {
+  const corta = (l) => l.map((o) => { const r = {}; for (const [k, v] of Object.entries(o)) r[k] = typeof v === "string" && v.length > 500 ? v.slice(0, 500) + "…" : v; return r; });
+  if (chaveLista && obj[chaveLista]) obj[chaveLista] = corta(obj[chaveLista]);
+  while (JSON.stringify(obj).length > 28000 && chaveLista && obj[chaveLista].length > 1) {
+    obj[chaveLista] = obj[chaveLista].slice(0, Math.ceil(obj[chaveLista].length * 0.7)); obj.aviso = "Resultado cortado para caber. Use o parâmetro colunas, filtros ou limite menor.";
+  }
+  return obj;
+}
+const projetar = (linhas, a, colunas) => { if (!colunas || !colunas.length) return linhas; const cs = colunas.map((c) => pegarCol(a, c)); return linhas.map((l) => Object.fromEntries(cs.map((c) => [c, l[c]]))); };
 const TOOLS = [
-  { name: "listar_tabelas", description: "Lista as tabelas disponíveis, com uma descrição de cada uma (quando houver), o número de linhas e os nomes das colunas. Use primeiro.",
-    execute: () => Object.entries(BASE.abas).map(([k, a]) => ({ tabela: k, descricao: a.descricao || "", linhas: a.linhas.length, colunas: a.colunas })) },
+  { name: "listar_tabelas", description: "Lista as tabelas disponíveis: descrição, número de linhas, colunas e quais colunas são de texto longo (descrições, observações). Use primeiro.",
+    execute: () => Object.entries(BASE.abas).map(([k, a]) => {
+      const texto = a.colunas.filter((c) => { const vs = a.linhas.map((l) => l[c]).filter((v) => typeof v === "string" && v && num(v) === null && !ehData(v));
+        if (!vs.length) return false; const dist = new Set(vs).size; const media = vs.reduce((x, v) => x + v.length, 0) / vs.length;
+        return Math.max(...vs.map((v) => v.length)) > 40 || (media > 15 && dist / vs.length > 0.3) || /descri|observa|motivo|coment|ocorr|detalhe/i.test(norm(c)); });
+      return { tabela: k, descricao: a.descricao || "", linhas: a.linhas.length, colunas: a.colunas, colunas_de_texto: texto, ...(a.formulas ? { colunas_calculadas_de_formulas: a.formulas } : {}) };
+    }) },
   { name: "ver_amostra", description: "Mostra as primeiras linhas de uma tabela (até 8), para entender o formato dos valores.",
     inputSchema: { type: "object", properties: { tabela: { type: "string" }, quantidade: { type: "number" } }, required: ["tabela"] },
-    execute: ({ tabela, quantidade }) => pegarAba(tabela).linhas.slice(0, Math.min(8, Number(quantidade) || 4)) },
-  { name: "valores_unicos", description: "Lista os valores distintos de uma coluna (até 60) e quantas vezes aparecem. Útil para achar o nome exato de um evento, fornecedor ou tipo.",
+    execute: ({ tabela, quantidade }) => caber({ linhas: pegarAba(tabela).linhas.slice(0, Math.min(8, Number(quantidade) || 4)) }, "linhas") },
+  { name: "valores_unicos", description: "Lista os valores distintos de uma coluna (até 80) e quantas vezes aparecem. Use para achar o nome exato de um evento, fornecedor, tipo ou status.",
     inputSchema: { type: "object", properties: { tabela: { type: "string" }, coluna: { type: "string" } }, required: ["tabela", "coluna"] },
-    execute: ({ tabela, coluna }) => { const a = pegarAba(tabela), c = pegarCol(a, coluna), m = {}; a.linhas.forEach((l) => { m[l[c]] = (m[l[c]] || 0) + 1; });
-      return Object.entries(m).sort((x, y) => y[1] - x[1]).slice(0, 60).map(([valor, vezes]) => ({ valor, vezes })); } },
-  { name: "consultar", description: "Consulta uma tabela: filtros (op: =, !=, >, <, >=, <=, contem; datas como AAAA-MM-DD), agrupar_por uma coluna e métricas (soma, media, contar, max, min de uma coluna). Sem métricas, devolve as linhas filtradas. Ordena e limita (máx. 50).",
+    execute: ({ tabela, coluna }) => { const a = pegarAba(tabela), c = pegarCol(a, coluna), m = {}; a.linhas.forEach((l) => { const v = l[c] === "" ? "(vazio)" : l[c]; m[v] = (m[v] || 0) + 1; });
+      return caber({ coluna: c, distintos: Object.keys(m).length, valores: Object.entries(m).sort((x, y) => y[1] - x[1]).slice(0, 80).map(([valor, vezes]) => ({ valor, vezes })) }, "valores"); } },
+  { name: "buscar_texto", description: "Procura um termo (sem diferenciar maiúsculas ou acentos) nas colunas de texto de uma tabela, ou em todas as tabelas se nenhuma for informada. Devolve as linhas encontradas com o texto completo. Use para perguntas sobre descrições, observações, motivos e problemas (ex.: 'vazamento', 'lâmpada', 'atraso').",
+    inputSchema: { type: "object", properties: { termo: { type: "string" }, tabela: { type: "string" }, coluna: { type: "string" }, limite: { type: "number" } }, required: ["termo"] },
+    execute: ({ termo, tabela, coluna, limite }) => {
+      const t = norm(termo); const lim = Math.min(60, Number(limite) || 30); const achados = []; let total = 0;
+      const abas = tabela ? Object.entries(BASE.abas).filter(([, a]) => a === pegarAba(tabela)) : Object.entries(BASE.abas);
+      for (const [nome, a] of abas) {
+        const cols = coluna ? [pegarCol(a, coluna)] : a.colunas;
+        for (const l of a.linhas) if (cols.some((c) => norm(l[c]).includes(t))) { total++; if (achados.length < lim) achados.push({ tabela: nome, ...l }); }
+      }
+      return caber({ termo, encontrados: total, linhas: achados }, "linhas");
+    } },
+  { name: "consultar", description: "Consulta uma tabela. filtros: lista de {coluna, op, valor}, com op = (igual), !=, >, <, >=, <=, contem, nao_contem, vazio, nao_vazio; datas como AAAA-MM-DD. agrupar_por: coluna (use por_mes=true para agrupar uma coluna de data por mês AAAA-MM). metricas: lista de {op: soma|media|contar|max|min, coluna}. Sem métricas, devolve as linhas filtradas (use colunas para escolher só as que importam). ordenar_por pode ser uma coluna ou o nome de uma métrica (ex.: soma_Valor). Máx. 50 linhas.",
     inputSchema: { type: "object", properties: {
       tabela: { type: "string" },
       filtros: { type: "array", items: { type: "object", properties: { coluna: { type: "string" }, op: { type: "string" }, valor: {} } } },
-      agrupar_por: { type: "string" },
+      agrupar_por: { type: "string" }, por_mes: { type: "boolean" },
       metricas: { type: "array", items: { type: "object", properties: { op: { type: "string", enum: ["soma", "media", "contar", "max", "min"] }, coluna: { type: "string" } } } },
+      colunas: { type: "array", items: { type: "string" } },
       ordenar_por: { type: "string" }, decrescente: { type: "boolean" }, limite: { type: "number" } }, required: ["tabela"] },
-    execute: ({ tabela, filtros, agrupar_por, metricas, ordenar_por, decrescente, limite }) => {
-      const a = pegarAba(tabela); const ls = filtrar(a, filtros); const lim = Math.min(50, Number(limite) || 20);
+    execute: ({ tabela, filtros, agrupar_por, por_mes, metricas, colunas, ordenar_por, decrescente, limite }) => {
+      const a = pegarAba(tabela); const ls = filtrar(a, filtros); const lim = Math.min(50, Number(limite) || 25);
       let out;
       if (metricas && metricas.length) {
         const g = agrupar_por ? pegarCol(a, agrupar_por) : null; const grupos = {};
-        ls.forEach((l) => { const k = g ? l[g] : "total"; (grupos[k] = grupos[k] || []).push(l); });
-        out = Object.entries(grupos).map(([k, gl]) => { const o = g ? { [g]: k } : {}; o.linhas = gl.length;
+        ls.forEach((l) => { let k = g ? l[g] : "total"; if (g && por_mes) k = String(k).slice(0, 7); if (k === "") k = "(vazio)"; (grupos[k] = grupos[k] || []).push(l); });
+        out = Object.entries(grupos).map(([k, gl]) => { const o = g ? { [g + (por_mes ? " (mês)" : "")]: k } : {}; o.linhas = gl.length;
           for (const m of metricas) { const op = m.op || "soma";
             if (op === "contar") { o.contar = gl.length; continue; }
             const c = pegarCol(a, m.coluna); const vs = gl.map((l) => num(l[c])).filter((v) => v !== null); const nome = op + "_" + c;
             o[nome] = !vs.length ? null : op === "soma" ? +vs.reduce((x, y) => x + y, 0).toFixed(2) : op === "media" ? +(vs.reduce((x, y) => x + y, 0) / vs.length).toFixed(2) : op === "max" ? Math.max(...vs) : Math.min(...vs); }
           return o; });
-      } else out = ls.slice();
-      if (ordenar_por && out.length) { const k = Object.keys(out[0]).find((x) => x.toLowerCase() === String(ordenar_por).toLowerCase()) || ordenar_por;
-        out.sort((x, y) => { const A = num(x[k]) ?? String(x[k]), B = num(y[k]) ?? String(y[k]); return (A > B ? 1 : A < B ? -1 : 0) * (decrescente ? -1 : 1); }); }
-      return { linhas_encontradas: ls.length, resultado: out.slice(0, lim) };
+        if (g && por_mes && !ordenar_por) out.sort((x, y) => (Object.values(x)[0] > Object.values(y)[0] ? 1 : -1));
+      } else out = projetar(ls, a, colunas);
+      if (ordenar_por && out.length) { const ks = Object.keys(out[0]); const k = ks.find((x) => x === ordenar_por) || ks.find((x) => chave(x) === chave(ordenar_por)) || ks.find((x) => chave(x).includes(chave(ordenar_por))) || ordenar_por;
+        out.sort((x, y) => { const A = num(x[k]) ?? String(x[k] ?? ""), B = num(y[k]) ?? String(y[k] ?? ""); return (A > B ? 1 : A < B ? -1 : 0) * (decrescente ? -1 : 1); }); }
+      return caber({ linhas_encontradas: ls.length, ...(metricas && metricas.length ? { grupos: out.length } : {}), resultado: out.slice(0, lim) }, "resultado");
     } },
-  { name: "calcular", description: "Faz uma conta exata (ex.: 185230.5 / 38468, ou (1200 - 950) / 950 * 100). Use para divisões, percentuais e diferenças em vez de calcular de cabeça.",
+  { name: "calcular", description: "Faz contas exatas (ex.: 185230.5 / 38468, ou (1200 - 950) / 950 * 100). Use para divisões, percentuais, diferenças e somas de valores que vieram de consultas diferentes, em vez de calcular de cabeça.",
     inputSchema: { type: "object", properties: { expressao: { type: "string" } }, required: ["expressao"] },
     execute: ({ expressao }) => { const e = String(expressao).replace(/,/g, "."); if (!/^[\d\s.+\-*/()]+$/.test(e)) throw new Error("Use só números e + - * / ( )."); const r = Function('"use strict";return (' + e + ")")(); if (!isFinite(r)) throw new Error("Resultado inválido."); return { resultado: +r.toFixed(4) }; } },
 ];
 const hoje = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
-const REGRAS = () => `Você é o agente da Central de Engenharia de uma arena de eventos. Responde perguntas de uma pessoa da equipe, em português do Brasil, de forma curta e clara.
+const REGRAS = () => `Você é o agente da Central de Engenharia de uma arena de eventos. Responde perguntas de uma pessoa da equipe, em português do Brasil, de forma curta, clara e correta.
 ${EM_PLANILHA ? "Os dados vêm de planilhas que o usuário enviou." : "Os dados são da base de demonstração (fictícios, empresa Arena Demo)."} Hoje é ${hoje()}.
-Regras:
-- Comece com listar_tabelas para saber onde está cada dado. Use valores_unicos para achar nomes exatos.
-- Todo número vem das ferramentas: use consultar para somar e filtrar e calcular para divisões e percentuais. Nunca invente valores, eventos, fornecedores ou datas.
-- Se a base não tiver o dado (ex.: bilheteria, nomes de pessoas), diga isso e sugira o que dá para responder.
-- Datas como dd/mm/aaaa e reais como R$ 12.345. No máximo 7 linhas ou uma lista curta, sem tabelas.
-- Feche com uma linha "O que isso indica: ..." quando ajudar a decidir algo.`;
+Como trabalhar:
+1. Comece com listar_tabelas para saber onde está cada dado e quais colunas são de texto.
+2. Ache os nomes exatos com valores_unicos antes de filtrar por evento, fornecedor, tipo ou status.
+3. Números: use consultar (filtros, agrupar_por, metricas) e calcular para divisões, percentuais e diferenças. Nunca faça conta de cabeça e nunca invente valores, nomes ou datas.
+4. Textos (descrições, observações, motivos, "o que aconteceu"): leia as linhas com buscar_texto ou consultar com colunas=[...] e resuma o que elas dizem, citando exemplos curtos e quantas ocorrências achou.
+5. Colunas com % no nome guardam frações: 0,25 = 25% e 1 = 100%. Converta ao responder.
+6. Perguntas de tempo ("por mês", "em outubro"): filtre a coluna de data com >= e <= ou agrupe com por_mes=true.
+7. Se uma consulta voltar vazia, confira nomes e filtros com valores_unicos antes de dizer que não existe.
+8. Se a base não tiver o dado, diga isso com clareza e sugira o que dá para responder.
+Resposta: datas como dd/mm/aaaa, reais como R$ 12.345,67, no máximo 8 linhas ou uma lista curta, sem tabelas. Diga em poucas palavras de qual tabela veio. Feche com "O que isso indica: ..." quando ajudar a decidir algo.`;
 
 // ---------------------------------------------------------------- Leitura de planilhas (só no modo privado)
+// Avalia fórmulas que vieram sem valor salvo (comum em planilhas exportadas por sistemas)
+function avaliador(wb) {
+  const memo = {}, ERRO = { erro: true };
+  const ref = (sh, addr) => { const k = sh + "!" + addr; if (k in memo) return memo[k]; memo[k] = 0; const ws = wb.Sheets[sh]; const c = ws && ws[addr];
+    let v = c && c.t !== "z" ? c.v : undefined;
+    if (c && (v === undefined || v === null) && c.f) { try { v = calc(sh, c.f); } catch { v = ERRO; } }
+    if (v instanceof Date) v = v.getTime() / 864e5 + 25569;
+    return (memo[k] = v === undefined ? null : v); };
+  const maxLinha = (sh) => XLSX.utils.decode_range(wb.Sheets[sh]["!ref"] || "A1").e.r + 1;
+  function faixa(sh, a1, a2) {
+    const A = XLSX.utils.decode_cell(a1.replace(/\$/g, "")), B = XLSX.utils.decode_cell(a2.replace(/\$/g, "")); const out = [];
+    for (let r = Math.min(A.r, B.r); r <= Math.max(A.r, B.r); r++) for (let c = Math.min(A.c, B.c); c <= Math.max(A.c, B.c); c++) out.push(ref(sh, XLSX.utils.encode_cell({ r, c })));
+    return out;
+  }
+  function calc(sh, f) {
+    const tk = []; const re = /\s*(?:("(?:[^"]|"")*")|('(?:[^']|'')+'!|[A-Za-z0-9_.]+!)?(\$?[A-Z]{1,3}\$?\d+(?::\$?[A-Z]{1,3}\$?\d+)?|\$?[A-Z]{1,3}:\$?[A-Z]{1,3})|(\d+(?:\.\d+)?(?:E[+-]?\d+)?)|([A-Z][A-Z0-9.]*)\(|(<=|>=|<>|[-+*/^&=<>(),;%]))/gy;
+    let m, i = 0; const src = String(f).replace(/^=/, "");
+    while (i < src.length && (re.lastIndex = i, m = re.exec(src))) { i = re.lastIndex;
+      if (m[1]) tk.push({ t: "s", v: m[1].slice(1, -1).replace(/""/g, '"') });
+      else if (m[3]) tk.push({ t: "r", sh: m[2] ? m[2].slice(0, -1).replace(/^'|'$/g, "").replace(/''/g, "'") : sh, v: m[3] });
+      else if (m[4]) tk.push({ t: "n", v: parseFloat(m[4]) });
+      else if (m[5]) tk.push({ t: "f", v: m[5].toUpperCase() });
+      else if (m[6]) tk.push({ t: "o", v: m[6] === ";" ? "," : m[6] });
+      if (!m[0].length) break; }
+    if (i < src.trim().length) throw ERRO;
+    let p = 0; const peek = () => tk[p], take = () => tk[p++];
+    const isO = (v) => peek() && peek().t === "o" && peek().v === v;
+    const val = (x) => (Array.isArray(x) ? x[0] : x);
+    const N = (x) => { x = val(x); if (x && x.erro) throw ERRO; if (x === null || x === "" || x === undefined) return 0; if (typeof x === "boolean") return +x; const n = num(x); if (n === null) throw ERRO; return n; };
+    function prim() {
+      const t = take(); if (!t) throw ERRO;
+      if (t.t === "n" || t.t === "s") return t.v;
+      if (t.t === "o" && t.v === "(") { const v = expr(); take(); return v; }
+      if (t.t === "o" && t.v === "-") return -N(unario());
+      if (t.t === "o" && t.v === "+") return N(unario());
+      if (t.t === "r") { const s = t.sh, a = t.v;
+        if (/^\$?[A-Z]+:\$?[A-Z]+$/.test(a)) { const [c1, c2] = a.replace(/\$/g, "").split(":"); return faixa(s, c1 + "1", c2 + maxLinha(s)); }
+        if (a.includes(":")) { const [a1, a2] = a.split(":"); return faixa(s, a1, a2); }
+        return ref(s, a.replace(/\$/g, "")); }
+      if (t.t === "f") { const args = []; if (!isO(")")) { do { if (isO(",")) { args.push(null); } else args.push(t.v === "IFERROR" || t.v === "IFNA" || t.v === "IF" ? (() => { const q = p; try { return expr(); } catch (e) { pularArg(q); return ERRO; } })() : expr()); } while (isO(",") && take()); } take(); return fn(t.v, args); }
+      throw ERRO;
+    }
+    function pularArg(q) { p = q; let d = 0; while (p < tk.length) { const t = tk[p]; if (t.t === "f" || (t.t === "o" && t.v === "(")) d++; else if (t.t === "o" && t.v === ")") { if (!d) return; d--; } else if (t.t === "o" && t.v === "," && !d) return; p++; } }
+    const unario = () => prim();
+    function pot() { let v = unario(); while (isO("^")) { take(); v = Math.pow(N(v), N(unario())); } if (isO("%")) { take(); v = N(v) / 100; } return v; }
+    function mult() { let v = pot(); while (isO("*") || isO("/")) { const o = take().v, r = pot(); if (o === "*") v = N(v) * N(r); else { if (N(r) === 0) throw ERRO; v = N(v) / N(r); } } return v; }
+    function soma() { let v = mult(); while (isO("+") || isO("-")) { const o = take().v, r = mult(); v = o === "+" ? N(v) + N(r) : N(v) - N(r); } return v; }
+    function conc() { let v = soma(); while (isO("&")) { take(); v = String(val(v) ?? "") + String(val(soma()) ?? ""); } return v; }
+    function expr() { let v = conc(); while (["=", "<>", "<", ">", "<=", ">="].some(isO)) { const o = take().v, r = conc(); const A = val(v), B = val(r); const a = num(A) ?? norm(A), b = num(B) ?? norm(B);
+      v = o === "=" ? a === b : o === "<>" ? a !== b : o === "<" ? a < b : o === ">" ? a > b : o === "<=" ? a <= b : a >= b; } return v; }
+    const lista = (args) => args.flatMap((x) => (Array.isArray(x) ? x : [x]));
+    const nums = (args) => lista(args).filter((x) => typeof x === "number").map(Number);
+    const crit = (c) => { const s = String(val(c) ?? ""); const m2 = s.match(/^(<=|>=|<>|<|>|=)?(.*)$/); const op = m2[1] || "=", alvo = m2[2];
+      return (x) => { const nx = num(x), na = num(alvo); const [A, B] = nx !== null && na !== null ? [nx, na] : [norm(x), norm(alvo)];
+        return op === "=" ? A === B : op === "<>" ? A !== B : op === "<" ? A < B : op === ">" ? A > B : op === "<=" ? A <= B : A >= B; }; };
+    const ifs = (somar, pares) => { const n = (somar || pares[0]).length; const res = []; for (let k = 0; k < n; k++) { let ok = true; for (let j = 0; j < pares.length; j += 2) if (!crit(pares[j + 1])(pares[j][k])) { ok = false; break; } if (ok) res.push(somar ? somar[k] : 1); } return res; };
+    function fn(nome, a) {
+      const err = (x) => x && x.erro;
+      switch (nome) {
+        case "SUM": case "SOMA": return nums(a).reduce((x, y) => x + y, 0);
+        case "COUNT": case "CONT.NÚM": return nums(a).length;
+        case "COUNTA": return lista(a).filter((x) => x !== null && x !== "").length;
+        case "AVERAGE": { const v = nums(a); if (!v.length) throw ERRO; return v.reduce((x, y) => x + y, 0) / v.length; }
+        case "MIN": return Math.min(...nums(a)); case "MAX": return Math.max(...nums(a));
+        case "ROUND": { const d = Math.pow(10, N(a[1] ?? 0)); return Math.round(N(a[0]) * d) / d; }
+        case "ROUNDUP": { const d = Math.pow(10, N(a[1] ?? 0)); return Math.ceil(N(a[0]) * d) / d; }
+        case "ROUNDDOWN": case "TRUNC": { const d = Math.pow(10, N(a[1] ?? 0)); return Math.floor(N(a[0]) * d) / d; }
+        case "ABS": return Math.abs(N(a[0]));
+        case "N": { const x = val(a[0]); return typeof x === "number" ? x : 0; }
+        case "IF": { const c = val(a[0]); if (err(c)) throw ERRO; return (c && c !== 0 && c !== "0") ? (a[1] ?? true) : (a[2] ?? false); }
+        case "IFERROR": case "IFNA": { const x = val(a[0]); return err(x) ? a[1] : a[0]; }
+        case "AND": return lista(a).every((x) => !!x); case "OR": return lista(a).some((x) => !!x); case "NOT": return !val(a[0]);
+        case "SUMIFS": return ifs(a[0], a.slice(1)).reduce((x, y) => x + (typeof y === "number" ? y : num(y) ?? 0), 0);
+        case "COUNTIFS": return ifs(null, a).length;
+        case "AVERAGEIFS": { const v = ifs(a[0], a.slice(1)).map((y) => num(y)).filter((y) => y !== null); if (!v.length) throw ERRO; return v.reduce((x, y) => x + y, 0) / v.length; }
+        case "SUMIF": return ifs(a[2] || a[0], [a[0], a[1]]).reduce((x, y) => x + (typeof y === "number" ? y : num(y) ?? 0), 0);
+        case "COUNTIF": return ifs(null, [a[0], a[1]]).length;
+        case "LEN": return String(val(a[0]) ?? "").length;
+        case "UPPER": return String(val(a[0]) ?? "").toUpperCase();
+        case "TODAY": return Math.floor(Date.now() / 864e5) + 25569;
+        default: throw ERRO;
+      }
+    }
+    const v = expr(); const r = val(v); if (r && r.erro) throw ERRO; return r;
+  }
+  return { ref };
+}
 function lerPlanilha(buf, arquivo, prefixar) {
-  const wb = XLSX.read(buf, { type: "array", cellDates: true });
+  const wb = XLSX.read(buf, { type: "array", cellDates: true, cellFormula: true, sheetStubs: true });
+  const av = avaliador(wb);
   const abas = {};
   for (const sn of wb.SheetNames) {
-    const aoa = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: "", raw: true });
+    const ws = wb.Sheets[sn]; if (!ws["!ref"]) continue;
+    const R = XLSX.utils.decode_range(ws["!ref"]);
+    const aoa = []; const formulas = {};
+    for (let r = R.s.r; r <= R.e.r; r++) { const row = [];
+      for (let c = R.s.c; c <= R.e.c; c++) { const addr = XLSX.utils.encode_cell({ r, c }); const cell = ws[addr];
+        let v = cell && cell.t !== "z" ? cell.v : "";
+        if (cell && (v === undefined || v === null || v === "") && cell.f) { const x = av.ref(sn, addr); v = x && x.erro ? "" : x ?? ""; if (typeof v === "boolean") v = v ? "VERDADEIRO" : "FALSO"; if (typeof v === "number") v = Math.round(v * 1e6) / 1e6; formulas[c] = true; }
+        row.push(v === undefined || v === null ? "" : v); }
+      aoa.push(row); }
     let hi = 0, best = -1;
-    aoa.slice(0, 20).forEach((row, i) => { const n = row.filter((c) => typeof c === "string" && c.trim()).length; if (n > best) { best = n; hi = i; } });
+    aoa.slice(0, 20).forEach((row, i) => { const n = row.filter((c) => typeof c === "string" && c.trim() && num(c) === null).length; if (n > best) { best = n; hi = i; } });
     if (best < 1) continue;
     const vistos = {};
     const cols = aoa[hi].map((c, j) => { let n = String(c || "").trim() || "Coluna " + (j + 1); if (vistos[n]) n += " " + (++vistos[n]); else vistos[n] = 1; return n; });
+    const titulo = aoa.slice(0, hi).map((r) => r.filter((x) => String(x).trim()).join(" ")).filter(Boolean).join(" · ");
     const linhas = [];
     for (const row of aoa.slice(hi + 1)) {
       if (!row.some((c) => String(c).trim() !== "")) continue;
+      if (/^(total|totais|total geral|soma)\b/i.test(norm(row.find((x) => String(x).trim() !== "")))) continue;
       const o = {};
-      cols.forEach((c, j) => { let v = row[j]; if (v instanceof Date) v = v.getFullYear() + "-" + String(v.getMonth() + 1).padStart(2, "0") + "-" + String(v.getDate()).padStart(2, "0"); o[c] = v === undefined ? "" : v; });
+      cols.forEach((c, j) => { let v = row[j];
+        if (v instanceof Date) v = v.getFullYear() + "-" + String(v.getMonth() + 1).padStart(2, "0") + "-" + String(v.getDate()).padStart(2, "0");
+        if (typeof v === "string") { v = v.trim(); const md = v.match(/^(\d{4}-\d{2}-\d{2})[ T]00:00(:00)?$/); if (md) v = md[1]; const br = v.match(/^(\d{2})\/(\d{2})\/(\d{4})$/); if (br) v = `${br[3]}-${br[2]}-${br[1]}`; }
+        o[c] = v === undefined ? "" : v; });
       linhas.push(o);
     }
-    if (linhas.length) abas[(prefixar ? arquivo.replace(/\.[^.]+$/, "") + " · " : "") + sn] = { colunas: cols, linhas };
+    if (!linhas.length) continue;
+    const nome = (prefixar ? arquivo.replace(/\.[^.]+$/, "") + " · " : "") + sn;
+    const fcols = Object.keys(formulas).map((j) => cols[j - R.s.c]).filter(Boolean);
+    abas[nome] = { descricao: titulo, colunas: cols, linhas, ...(fcols.length ? { formulas: fcols } : {}) };
   }
   return abas;
 }
@@ -247,7 +391,7 @@ async function perguntar(texto) {
   } }));
   try {
     const { text } = await sample([{ role: "user", content: REGRAS() }, ...turns.slice(-8)], {
-      tools, modelTier: "default", effort: "low", signal: ctl.signal,
+      tools, modelTier: "default", effort: "medium", signal: ctl.signal,
       onText: ({ text }) => { b.className = "msg bot"; b.innerHTML = md(text); chat.scrollTop = 1e9; },
     });
     b.className = "msg bot"; b.innerHTML = md(text);
